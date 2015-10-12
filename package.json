@@ -1,0 +1,14 @@
+{
+  "name": "components-testing",
+  "version": "0.0.1",
+  "description": "Components Testing for RequireJS/Ractive",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "material-design-lite": "^1.0.5",
+    "ractive": "^0.7.3",
+    "requirejs": "^2.1.20"
+  }
+}
