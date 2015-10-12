@@ -9,6 +9,7 @@
   "dependencies": {
     "material-design-lite": "^1.0.5",
     "ractive": "^0.7.3",
-    "requirejs": "^2.1.20"
+    "requirejs": "^2.1.20",
+    "requirejs-text": "^2.0.12"
   }
 }

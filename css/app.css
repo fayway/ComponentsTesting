@@ -1,0 +1,157 @@
+html, body {
+    font-family: 'Roboto', 'Helvetica', sans-serif;
+}
+.app-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 36px;
+}
+.app-layout .app-header .mdl-textfield {
+    padding-top: 27px;
+}
+.app-layout .mdl-layout__header .mdl-layout__drawer-button {
+    color: rgba(0, 0, 0, 0.54);
+}
+.mdl-layout__drawer .avatar {
+    margin-bottom: 16px;
+}
+.app-drawer {
+    border: none;
+}
+.app-drawer .mdl-menu .mdl-menu__item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.app-drawer-header {
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    padding: 16px;
+    height: 151px;
+}
+.app-avatar-dropdown {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    position: relative;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+.app-navigation {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+.app-layout .app-navigation .mdl-navigation__link {
+    display: -webkit-box !important;
+    display: -webkit-flex !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.56);
+    font-weight: 500;
+}
+.app-layout .app-navigation .mdl-navigation__link:hover {
+    background-color: #00BCD4;
+    color: #37474F;
+}
+.app-navigation .mdl-navigation__link .material-icons {
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.56);
+    margin-right: 32px;
+}
+
+.app-content {
+    /*max-width: 1080px;*/
+}
+
+.app-virement-boxes {
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.app-card-virement.mdl-card {
+    min-width: 460px;
+}
+
+.app-virement-iban {
+    min-width: 415px;
+}
+
+.app-virement-owner {
+    width: 64px;
+    height: 64px;
+    border: none;
+    padding:20px;
+    border-radius: 32px;
+}
+
+.app-virement-balance {
+    color: white;
+    font-size: x-large;
+    float: right;
+    padding-top: 30px;
+    padding-right: 30px;
+}
+
+.app-card-virement.mdl-card .mdl-data-table th {
+    padding: 0 5px 0 5px;
+    text-align: left;
+}
+
+.app-card-virement.mdl-card .mdl-data-table td {
+    text-align: right;
+    padding: 12px 12px 0;
+}
+
+.app-virement-validate {
+  margin-left: 20px;
+}
+
+.app-card-female {
+    background-color: #EF3C79;
+}
+
+.app-card-male {
+    background-color: #00BBD6;
+}
+

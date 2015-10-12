@@ -1,9 +1,10 @@
 'use strict';
-define(['ractive'], function (Ractive) {
+
+define(['ractive', 'text!templates/main.html'], function (Ractive, Template) {
     return {
         execute: function () {
             new Ractive({
-                template: '<h1>Components Testing</h1>'
+                template: Template
             });
         }
     }
