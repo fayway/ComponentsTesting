@@ -95,12 +95,13 @@
                     <button decorator="mdl" on-click="executeVirement(event)" {{#if !this.isVirementConfirmed }}disabled{{/if}} class="app-virement-validate mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                         Valider
                     </button>
-                    <div decorator="mdl" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate "></div>
+                    {{#if waitingVirement}}
+                        <div decorator="mdl" class="mdl-spinner mdl-js-spinner is-active" ></div>
+                    {{/if}}
                     <label decorator="mdl" id="confirm-virement-{{id}}" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" {{#if !this.isValidVirementMontant }}style="visibility: hidden"{{/if}}>
                         <input type="checkbox" class="mdl-checkbox__input" on-click="toggleVirementConfirmed(event)">
                         <span class="mdl-checkbox__label">Confirmer</span>
                     </label>
-                    <!--<div decorator="mdl" class="mdl-spinner mdl-js-spinner is-active" {{#if waitingVirement}}{{/if}}></div>-->
                 </div>
             </div>
             {{/salaries}}

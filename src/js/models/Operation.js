@@ -1,9 +1,9 @@
 'use strict';
 
 define([], function () {
-    var Operation = function (id, status) {
+    var Operation = function (id, statut) {
         this.id = id;
-        this.status = status;
+        this.statut = statut;
     }
 
     Operation.prototype.toString = function () {

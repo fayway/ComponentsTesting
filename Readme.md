@@ -1,0 +1,1 @@
+JS OOP Style : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
