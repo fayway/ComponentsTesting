@@ -6,7 +6,7 @@ require.config({
         'templates': '../templates',
         'ractive': '../../node_modules/ractive/ractive',
         'text': '../../node_modules/requirejs-text/text',
-        'mdl': '../../node_modules/material-design-lite/material'
+        '_': '../../node_modules/l'
     }
 });
 

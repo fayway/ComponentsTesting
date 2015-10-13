@@ -27,7 +27,7 @@
             {{#if compteCourant }}
             <img src="{{compteCourant.photo}}" class="app-avatar">
             <div class="app-avatar-dropdown">
-                <span>{{compteCourant.getFullname()}}</span>
+                <span>{{compteCourant.getFullName()}}</span>
                 <div class="mdl-layout-spacer"></div>
                 <button decorator="mdl" id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
                     <i class="material-icons" role="presentation">arrow_drop_down</i>
@@ -35,7 +35,7 @@
                 </button>
                 <ul decorator="mdl" class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
                     {{#comptes}}
-                    <li on-click="switchCompte(event, this)" class="mdl-menu__item">{{this.getFullname()}}</li>
+                    <li on-click="switchCompte(event, this)" class="mdl-menu__item">{{this.getFullName()}}</li>
                     {{/comptes}}
                 </ul>
             </div>

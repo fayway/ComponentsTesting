@@ -7,9 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "lodash": "^3.10.1",
     "material-design-lite": "^1.0.5",
     "ractive": "^0.7.3",
     "requirejs": "^2.1.20",
     "requirejs-text": "^2.0.12"
+  },
+  "devDependencies": {
+    "gulp-connect": "^2.2.0"
   }
 }
