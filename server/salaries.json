@@ -1,0 +1,33 @@
+[{
+    "id": 11,
+    "civilite": "M",
+    "firstname": "Monsieur",
+    "lastname": "Dupont",
+    "photo": "/images/malecostume.png",
+    "balance": "15200",
+    "iban": "FR7618206002106577244700112"
+  }, {
+    "id": 20,
+    "civilite": "Mme",
+    "firstname": "Madame",
+    "lastname": "Dupont",
+    "photo": "/images/female.png",
+    "balance": "250000",
+    "iban": "FR7618606002105487233800845"
+  }, {
+    "id": 21,
+    "civilite": "Mme",
+    "firstname": "Mami",
+    "lastname": "Dupont",
+    "photo": "/images/oldwoman.png",
+    "balance": "320000",
+    "iban": "FR7618606002105487244300344"
+  }, {
+    "id": 21,
+    "civilite": "M",
+    "firstname": "Papi",
+    "lastname": "Dupont",
+    "photo": "/images/oldman.png",
+    "balance": "65000",
+    "iban": "FR7619906002106587222600315"
+  }]

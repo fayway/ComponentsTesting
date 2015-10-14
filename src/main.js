@@ -6,7 +6,7 @@ require.config({
         'templates': '../templates',
         'ractive': '../../node_modules/ractive/ractive',
         'text': '../../node_modules/requirejs-text/text',
-        '_': '../../node_modules/l'
+        'jquery': '../../node_modules/jquery/dist/jquery'
     }
 });
 

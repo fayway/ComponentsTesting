@@ -1,0 +1,27 @@
+[{
+    "id": 10,
+    "civilite": "M",
+    "firstname": "John",
+    "lastname": "Doe",
+    "photo": "/images/male.png",
+    "login": "jdoe",
+    "role": "Admin",
+    "isDefault": true
+  }, {
+    "id": 11,
+    "civilite": "M",
+    "firstname": "Monsieur",
+    "lastname": "Dupont",
+    "photo": "/images/malecostume.png",
+    "login": "mdupont",
+    "role": "Salarie",
+    "isDefault": false
+  }, {
+    "id": 12,
+    "civilite": "M",
+    "firstname": "Super",
+    "lastname": "Admin",
+    "photo": "/images/matureman.png",
+    "login": "superadmin",
+    "role": "SuperAdmin"
+  }]

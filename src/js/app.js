@@ -3,9 +3,12 @@ define(['ractive', 'decorators/mdlDecorator', 'controllers/HomeController'], fun
     return {
         bootstrap: function () {
             console.log('App Bootstrap');
+
+            //Ractive Defaults Settings
             Ractive.defaults.el = 'body';
             Ractive.decorators.mdl = mdlDecorator;
 
+            //
             HomeController.execute();
         }
     }

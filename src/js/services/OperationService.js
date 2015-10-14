@@ -1,21 +1,27 @@
 'use strict';
 
-define(['models/Operation'], function (Operation) {
+define(['models/Operation', 'utils/ObjectUtils', 'ractive', 'jquery'], function (Operation, ObjectUtils, Ractive, $) {
 
-    var operations = [
-        new Operation(123, 'Pending'),
-        new Operation(234, 'Pending'),
-        new Operation(999, 'Pending'),
-        new Operation(788, 'Active')
-    ];
     return {
         getOperations: function () {
-            return operations;
+            return new Ractive.Promise(function (fulfill, reject) {
+                $.ajax('/server/operations.json', {
+                    method: 'GET'
+                }).then(function (json) {
+                    var operations = ObjectUtils.mapJsonToObjects(json, Operation);
+                    fulfill(operations);
+                }, reject);
+            });
         },
         getPendingOperations: function () {
-            return operations.filter(function (operation) {
-                return 'Pending' === operation.statut;
-            });
+            return new Ractive.Promise(function (fulfill, reject) {
+                this.getOperations().then(function (operations) {
+                    var pending = operations.filter(function (operation) {
+                        return 'Pending' === operation.statut;
+                    });
+                    fulfill(pending);
+                }, reject);
+            }.bind(this));
         }
     }
 })
