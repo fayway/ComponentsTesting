@@ -1,9 +1,9 @@
 'use strict';
 
-define(['models/Compte', 'utils/ObjectUtils', 'ractive', 'jquery'], function (Compte, ObjectUtils, Ractive, $) {
+define(['models/Compte', 'utils/ObjectUtils', 'promise', 'jquery'], function (Compte, ObjectUtils, Promise, $) {
     return {
         getComptes: function () {
-            return new Ractive.Promise(function (fulfill, reject) {
+            return new Promise(function (fulfill, reject) {
                 $.ajax('/server/comptes.json', {
                     method: 'GET'
                 }).then(function (json) {

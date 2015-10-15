@@ -5,30 +5,20 @@ define([
     'services/SalarieService',
     'services/OperationService',
     'valueobjects/IBAN',
+    'components/environment/demo-app/DemoApp',
     'ractive',
-    'text!templates/main.html'
-], function (CompteService, SalarieService, OperationService, IBAN, Ractive, Template) {
+    'text!templates/main-layout.html'
+], function (CompteService, SalarieService, OperationService, IBAN, DemoApp, Ractive, LayoutTemplate) {
     return {
         execute: function () {
             console.log('HomeController.execute()');
 
             var ractive = new Ractive({
-                template: Template,
-                computed: {
-                    filteredSalaries: function () {
-                        var keyword = this.get('keyword');
-                        var salaries = this.get('salaries');
-                        if (!keyword) {
-                            return salaries;
-                        } else {
-                            return salaries.filter(function (salarie) {
-                                var isFilterSatisfied = salarie.firstname.toLowerCase().includes(keyword)
-                                    || salarie.lastname.toLowerCase().includes(keyword)
-                                    || salarie.iban.toLowerCase().includes(keyword);
-                                return isFilterSatisfied;
-                            });
-                        }
-                    }
+                el: 'body',
+                template: LayoutTemplate,
+                isolated: false,
+                components: {
+                    'demo-app': DemoApp
                 },
                 oninit: function () {
                     this.initComptes();
@@ -62,35 +52,6 @@ define([
                         this.set('operationPendingCount', operations.length);
                     }.bind(this));
                 },
-                switchCompte: function (event) {
-                    this.set('compteCourant', event.context);
-                },
-                filterSalaries: function (event) {
-                    var keyword = event.node.value.toLowerCase();
-                    this.set('keyword', keyword);
-                },
-                toggleVirementConfirmed: function (event) {
-                    this.set(event.keypath + '.isVirementConfirmed', event.node.checked);
-                },
-                executeVirement: function (event) {
-                    event.node.MaterialButton.disable();
-                    var salarie = event.context;
-                    var filteredSalarieKeypath = event.keypath;
-                    var salarieKeypath = filteredSalarieKeypath.replace('filteredSalaries', 'salaries');
-                    this.set(salarieKeypath + '.waitingVirement', true);
-                    setTimeout(function () {
-                        var montantVirement = parseFloat(salarie.montantVirement);
-                        this.subtract(salarieKeypath + '.balance', montantVirement);
-                        this.set(salarieKeypath + '.montantVirement', null);
-                        this.set(filteredSalarieKeypath + '.montantVirement', null);
-                        this.set(salarieKeypath + '.waitingVirement', false);
-                        //
-                        var checkbox = document.querySelector('#confirm-virement-' + salarie.id);
-                        if (checkbox.MaterialCheckbox) {
-                            checkbox.MaterialCheckbox.uncheck();
-                        }
-                    }.bind(this), 1500);
-                },
                 /**
                  *
                  * @param iban
@@ -102,23 +63,6 @@ define([
                 }
             });
 
-            ractive.observe('filteredSalaries.*.montantVirement', function (newValue, oldValue, keypath, idx) {
-                var salariePath = 'filteredSalaries.' + idx;
-                var salarie = ractive.get(salariePath);
-                var isValidVirementMontant = false;
-                if (newValue && newValue.match(/^[0-9]+$/) && parseInt(newValue) <= salarie.balance) {
-                    isValidVirementMontant = true;
-                }
-                ractive.set(salariePath + '.isValidVirementMontant', isValidVirementMontant);
-                //
-                if (!isValidVirementMontant) {
-                    var checkbox = document.querySelector('#confirm-virement-' + salarie.id);
-                    if (checkbox && checkbox.MaterialCheckbox) {
-                        checkbox.MaterialCheckbox.uncheck();
-                        ractive.set(salariePath + '.isVirementConfirmed', false);
-                    }
-                }
-            });
         }
     }
 });
