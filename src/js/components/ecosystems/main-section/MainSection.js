@@ -5,50 +5,29 @@ define(['ractive', 'text!./main-section.html'], function (Ractive, Template) {
     return Ractive.extend({
         template: Template,
         isolated: false,
-        //computed: {
-        //    filteredSalaries: function () {
-        //        var keyword = this.get('keyword');
-        //        var salaries = this.get('salaries');
-        //        if (!keyword) {
-        //            return salaries;
-        //        } else {
-        //            return salaries.filter(function (salarie) {
-        //                var isFilterSatisfied = salarie.firstname.toLowerCase().includes(keyword)
-        //                    || salarie.lastname.toLowerCase().includes(keyword)
-        //                    || salarie.iban.toLowerCase().includes(keyword);
-        //                return isFilterSatisfied;
-        //            });
-        //        }
-        //    }
-        //},
+        computed: {
+            //filteredSalaries: function () {
+            //    var keyword = this.get('keyword');
+            //    var salaries = this.get('salaries');
+            //    if (!keyword) {
+            //        return salaries;
+            //    } else {
+            //        return salaries.filter(function (salarie) {
+            //            var isFilterSatisfied = salarie.firstname.toLowerCase().includes(keyword)
+            //                || salarie.lastname.toLowerCase().includes(keyword)
+            //                || salarie.iban.toLowerCase().includes(keyword);
+            //            return isFilterSatisfied;
+            //        });
+            //    }
+            //}
+        },
         oninit: function () {
-            this.observe('demo-app.keyword', function () {
+
+            this.observe('salaries', function () {
                 console.log(arguments);
-                //alert('alert');
-            });
+                console.log('salaries changed catched in MainSection');
+            })
 
-            this.observe('keyword', function () {
-                console.log(arguments);
-                //alert('alert');
-            });
-
-            this.observe('salaries keyword', function (newValue, oldValue, keypath, idx) {
-                var filteredSalaries;
-                var keyword = this.get('keyword');
-                var salaries = this.get('salaries');
-                if (!keyword) {
-                    filteredSalaries = salaries;
-                } else {
-                    filteredSalaries = salaries.filter(function (salarie) {
-                        var isFilterSatisfied = salarie.firstname.toLowerCase().includes(keyword)
-                            || salarie.lastname.toLowerCase().includes(keyword)
-                            || salarie.iban.toLowerCase().includes(keyword);
-                        return isFilterSatisfied;
-                    });
-                }
-
-                this.set('filteredSalaries', filteredSalaries);
-            });
 
             this.observe('filteredSalaries.*.montantVirement', function (newValue, oldValue, keypath, idx) {
                 var salariePath = 'filteredSalaries.' + idx;

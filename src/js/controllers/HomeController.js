@@ -21,6 +21,10 @@ define([
                     'demo-app': DemoApp
                 },
                 oninit: function () {
+                    this.observe('salaries', function () {
+                        console.log(arguments);
+                        console.log('salaries changed catched in HomeController');
+                    })
                     this.initComptes();
                     this.initSalaries();
                     this.initOperations();
