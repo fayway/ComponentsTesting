@@ -1,5 +1,8 @@
 var gulp = require('gulp');
-var connect = require('gulp-connect');
+var connect = require('gulp-connect')
+var sourcemaps = require('gulp-sourcemaps');
+var babel = require('gulp-babel');
+var concat = require('gulp-concat');
 
 gulp.task('connect', function () {
     connect.server({
@@ -7,13 +10,22 @@ gulp.task('connect', function () {
     });
 });
 
-gulp.task('source', function () {
-    gulp.src('src/**')
+gulp.task('es6', function () {
+    gulp.src('src/js/**/*.js')
+        .pipe(sourcemaps.init())
+        .pipe(babel())
+        .pipe(concat('bundle.js'))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('livereload', function () {
+    gulp.src(['dist/bundle.js', 'src/templates/**'])
         .pipe(connect.reload());
 });
 
 gulp.task('watch', function () {
-    gulp.watch(['src/**'], ['source']);
+    gulp.watch(['src/js/**/*.js'], ['es6']);
 });
 
-gulp.task('default', ['connect', 'watch']);
+gulp.task('default', ['connect', 'livereload', 'watch']);
