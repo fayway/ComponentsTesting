@@ -7,6 +7,9 @@ define(['ractive', 'text!./navigation-drawer.html'], function (Ractive, Template
         isolated: false,
         switchCompte: function (event) {
             this.set('compteCourant', event.context);
+        },
+        oninit: function () {
+            console.info('NavigationDrawer oninit');
         }
     });
 
