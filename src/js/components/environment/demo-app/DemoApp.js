@@ -16,12 +16,9 @@ define([
             'demo-main': MainSection
         },
         oninit: function () {
-            console.log('DemoApp oninit');
-
-            this.on('demo-header.keywordchange', function (keyword) {
+            this.on('search-filter.keywordchange', function (keyword) {
                 this.set('keyword', keyword);
             }.bind(this));
-
         }
     });
 

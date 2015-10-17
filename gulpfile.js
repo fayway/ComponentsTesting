@@ -10,6 +10,18 @@ gulp.task('connect', function () {
     });
 });
 
+gulp.task('livereload', function () {
+    gulp.src('src/**')
+        .pipe(connect.reload());
+});
+
+gulp.task('watch', function () {
+    gulp.watch(['src/**'], ['livereload']);
+});
+
+gulp.task('default', ['connect', 'watch']);
+
+//@todo To integrate Babel transpilation with RequireJS
 gulp.task('es6', function () {
     gulp.src('src/js/**/*.js')
         .pipe(sourcemaps.init())
@@ -18,14 +30,3 @@ gulp.task('es6', function () {
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('dist'));
 });
-
-gulp.task('livereload', function () {
-    gulp.src(['dist/bundle.js', 'src/templates/**'])
-        .pipe(connect.reload());
-});
-
-gulp.task('watch', function () {
-    gulp.watch(['src/js/**/*.js'], ['es6']);
-});
-
-gulp.task('default', ['connect', 'livereload', 'watch']);

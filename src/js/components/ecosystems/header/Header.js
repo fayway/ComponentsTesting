@@ -1,17 +1,18 @@
 'use strict';
 
-define(['ractive', 'text!./header.html'], function (Ractive, Template) {
+define([
+    'components/atoms/breadcrumb/Breadcrumb',
+    'components/atoms/search-filter/SearchFilter',
+    'components/organisms/bar-menu/BarMenu',
+    'ractive',
+    'text!./header.html'], function (Breadcrumb, SearchFilter, BarMenu, Ractive, Template) {
 
     return Ractive.extend({
         template: Template,
-        isolated: false,
-        fireKeywordChange: function (event) {
-            var keyword = event.node.value.toLowerCase();
-            this.fire('keywordchange', keyword);
-            this.fire('bob', keyword);
-        },
-        oninit: function () {
-            console.log('Header oninit');
+        components: {
+            'breadcrumb': Breadcrumb,
+            'search-filter': SearchFilter,
+            'bar-menu': BarMenu
         }
     });
 

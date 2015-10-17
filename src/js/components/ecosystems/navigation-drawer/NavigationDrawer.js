@@ -1,15 +1,17 @@
 'use strict';
 
-define(['ractive', 'text!./navigation-drawer.html'], function (Ractive, Template) {
+define([
+    'components/organisms/compte-switcher/CompteSwitcher',
+    'components/organisms/vertical-menu/VerticalMenu',
+    'ractive',
+    'text!./navigation-drawer.html'
+], function (CompteSwitcher, VerticalMenu, Ractive, Template) {
 
     return Ractive.extend({
         template: Template,
-        isolated: false,
-        switchCompte: function (event) {
-            this.set('compteCourant', event.context);
-        },
-        oninit: function () {
-            console.info('NavigationDrawer oninit');
+        components: {
+            'compte-switcher': CompteSwitcher,
+            'vertical-menu': VerticalMenu
         }
     });
 

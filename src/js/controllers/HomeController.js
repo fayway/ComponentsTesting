@@ -4,11 +4,11 @@ define([
     'services/CompteService',
     'services/SalarieService',
     'services/OperationService',
-    'valueobjects/IBAN',
+    'services/VirementService',
     'components/environment/demo-app/DemoApp',
     'ractive',
     'text!templates/main-layout.html'
-], function (CompteService, SalarieService, OperationService, IBAN, DemoApp, Ractive, LayoutTemplate) {
+], function (CompteService, SalarieService, OperationService, VirementService, DemoApp, Ractive, LayoutTemplate) {
     return {
         execute: function () {
             console.log('HomeController.execute()');
@@ -21,8 +21,6 @@ define([
                     'demo-app': DemoApp
                 },
                 oninit: function () {
-                    console.log('HomeController oninit');
-
                     this.initComptes();
                     this.initOperations();
                     this.initSalaries();
@@ -30,20 +28,12 @@ define([
                 initComptes: function () {
                     CompteService.getComptes().then(function (comptes){
                         this.set('comptes', comptes);
-                        var compteCourant = comptes.find(function (compte) {
-                            return compte.isDefault === true;
-                        });
-                        this.set('compteCourant', compteCourant);
                     }.bind(this));
                 },
                 initSalaries: function () {
                     SalarieService.getSalaries().then(function(salaries) {
                         salaries = salaries.map(function (salarie) {
                             salarie.fullname = salarie.getFullName();
-                            var ibanArray = this.ibanSplitter(salarie.iban);
-                            if (ibanArray instanceof Array && ibanArray.length > 6) {
-                                salarie.ibanVO = new IBAN(ibanArray[1], ibanArray[2], ibanArray[3], ibanArray[4], ibanArray[5], ibanArray[6]);
-                            }
                             return salarie;
                         }.bind(this));
                         this.set('salaries', salaries);
@@ -53,16 +43,24 @@ define([
                     OperationService.getPendingOperations().then(function (operations) {
                         this.set('operationPendingCount', operations.length);
                     }.bind(this));
-                },
-                /**
-                 *
-                 * @param iban
-                 * @return {Array|{index: number, input: string}}
-                 */
-                ibanSplitter: function (iban) {
-                    var ibanRegex = /^([A-Z]{2})(\d{2})(\d{5})(\d{5})(\d{11})(\d{2})$/;
-                    return iban.match(ibanRegex);
                 }
+            });
+
+            ractive.on('virement-box.virementOrder', function (salarieId, montantVirement, showProgress, callback) {
+                var salaries = this.get('salaries');
+                var salarie = salaries.find(function (salarie) {
+                    return salarie.id === salarieId;
+                });
+                var salarieIndex = salaries.indexOf(salarie);
+                //
+                showProgress();
+
+                VirementService.postVirement(salarieId, montantVirement).then( function() {
+                    this.subtract('salaries.' + salarieIndex + '.balance', montantVirement);
+                    if (callback) {
+                        callback();
+                    }
+                }.bind(this));
             });
 
         }
