@@ -4,7 +4,7 @@
   "description": "Components Testing for RequireJS/Ractive",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/*"
   },
   "dependencies": {
     "jquery": "^2.1.4",
@@ -16,9 +16,12 @@
     "requirejs-text": "^2.0.12"
   },
   "devDependencies": {
+    "chai": "^3.3.0",
     "gulp-babel": "^5.3.0",
     "gulp-concat": "^2.6.0",
     "gulp-connect": "^2.2.0",
-    "gulp-sourcemaps": "^1.6.0"
+    "gulp-sourcemaps": "^1.6.0",
+    "mocha": "^2.3.3",
+    "sinon": "^1.17.1"
   }
 }
