@@ -1,9 +1,9 @@
 'use strict';
 
-define(['models/Salarie', 'utils/ObjectUtils', 'ractive', 'jquery'], function (Salarie, ObjectUtils, Ractive, $) {
+define(['models/Salarie', 'utils/ObjectUtils', 'promise', 'jquery'], function (Salarie, ObjectUtils, Promise, $) {
     return {
         getSalaries: function () {
-            return new Ractive.Promise(function (fulfill, reject) {
+            return new Promise(function (fulfill, reject) {
                 $.ajax('/server/salaries.json', {
                     method: 'GET'
                 }).then(function (json) {

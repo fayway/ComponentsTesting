@@ -1,10 +1,10 @@
 'use strict';
 
-define(['models/Operation', 'utils/ObjectUtils', 'ractive', 'jquery'], function (Operation, ObjectUtils, Ractive, $) {
+define(['models/Operation', 'utils/ObjectUtils', 'promise', 'jquery'], function (Operation, ObjectUtils, Promise, $) {
 
     return {
         getOperations: function () {
-            return new Ractive.Promise(function (fulfill, reject) {
+            return new Promise(function (fulfill, reject) {
                 $.ajax('/server/operations.json', {
                     method: 'GET'
                 }).then(function (json) {
@@ -14,7 +14,7 @@ define(['models/Operation', 'utils/ObjectUtils', 'ractive', 'jquery'], function 
             });
         },
         getPendingOperations: function () {
-            return new Ractive.Promise(function (fulfill, reject) {
+            return new Promise(function (fulfill, reject) {
                 this.getOperations().then(function (operations) {
                     var pending = operations.filter(function (operation) {
                         return 'Pending' === operation.statut;

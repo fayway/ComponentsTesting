@@ -1,0 +1,15 @@
+<div decorator="mdl" class="mdl-textfield mdl-js-textfield">
+    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" value="{{montantVirement}}"  />
+    <label class="mdl-textfield__label" >Montant...</label>
+    <span class="mdl-textfield__error">Veuillez saisir un montant</span>
+</div>
+<button decorator="mdl" on-click="fireVirement(event)" {{#if !isVirementConfirmed }}disabled{{/if}} class="app-virement-validate mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+Valider
+</button>
+{{#if waitingVirement}}
+<div decorator="mdl" class="mdl-spinner mdl-js-spinner is-active" ></div>
+{{/if}}
+<label decorator="mdl" class="app-confirm-virement mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" {{#if !isValidVirementMontant }}style="visibility: hidden"{{/if}}>
+<input type="checkbox" class="mdl-checkbox__input" on-click="toggleVirementConfirmed(event)">
+<span class="mdl-checkbox__label">Confirmer</span>
+</label>
