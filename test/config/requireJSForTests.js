@@ -1,10 +1,8 @@
 var requirejs = require('requirejs');
 
-var baseUrl = __dirname + '/../src/js';
-
 requirejs.config({
     nodeRequire: require,
-    baseUrl: baseUrl,
+    baseUrl: __dirname + '/../../src/js',
     paths: {
         'templates': '../templates',
         'ractive': '../../node_modules/ractive/ractive',
@@ -15,4 +13,4 @@ requirejs.config({
     }
 });
 
-exports.requireJSForTests = requirejs;
+exports.requirejs = requirejs;

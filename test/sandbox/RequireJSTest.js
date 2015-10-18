@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var requirejs = require('../requirejstest.js').requireJSForTests;
+var requirejs = require('../config/requireJSForTests').requirejs;
 
 describe('RequireJS', function() {
 
