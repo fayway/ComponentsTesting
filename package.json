@@ -4,6 +4,7 @@
   "description": "Components Testing for RequireJS/Ractive",
   "main": "index.html",
   "scripts": {
+    "serve": "gulp",
     "test": "mocha test/index.js"
   },
   "dependencies": {

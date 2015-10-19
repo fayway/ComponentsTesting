@@ -3,7 +3,8 @@ require('./config/requireJSForTests');
 require('./config/ractiveForTests');
 
 //Run Tests
-require('./components/IbanSpec');
-require('./sandbox/RactiveTest');
-require('./sandbox/RequireJSTest');
+//require('./components/IbanSpec');
+require('./components/CompteSwitcherSpec');
+//require('./sandbox/RactiveTest');
+//require('./sandbox/RequireJSTest');
 

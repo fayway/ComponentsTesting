@@ -102,14 +102,14 @@ describe('Iban Component', function() {
                 }
             });
 
-            var $ = cheerio.load(component.toHTML());
+            var $html = cheerio(component.toHTML());
 
-            var pays = $('table').find('[role=pays]').text();
-            var controle = $('table').find('[role=controle]').text();
-            var banque = $('table').find('[role=banque]').text();
-            var guichet = $('table').find('[role=guichet]').text();
-            var compte = $('table').find('[role=compte]').text();
-            var cle = $('table').find('[role=cle]').text();
+            var pays = $html.find('[role=pays]').text();
+            var controle = $html.find('[role=controle]').text();
+            var banque = $html.find('[role=banque]').text();
+            var guichet = $html.find('[role=guichet]').text();
+            var compte = $html.find('[role=compte]').text();
+            var cle = $html.find('[role=cle]').text();
 
             expect(pays).to.equal('FR');
             expect(controle).to.equal('76');
