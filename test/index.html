@@ -1,0 +1,59 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+    <link href="../node_modules/mocha/mocha.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 0px 20px 0px 20px;
+        }
+        #mocha {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>Com</h1>
+<div id="mocha"></div>
+<div id='container' style="visibility: hidden"></div>
+
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../node_modules/material-design-lite/material.js"></script>
+<script src="../node_modules/mocha/mocha.js"></script>
+<script src="../node_modules/chai/chai.js"></script>
+<script src="../node_modules/requirejs/require.js"></script>
+
+<script>
+    require.config({
+        baseUrl: '../src/js',
+        paths: {
+            'templates': '../templates',
+            'ractive': '../../node_modules/ractive/ractive',
+            'promise': '../../node_modules/native-promise-only/npo',
+            'text': '../../node_modules/requirejs-text/text',
+            '_': '../../node_modules/lodash/index',
+            'jquery': '../../node_modules/jquery/dist/jquery'
+        }
+    });
+    //
+    mocha.setup({ui: 'bdd', ignoreLeaks: true, timeout: 5000, slow: 500});
+    chai.config.includeStack = true;
+    chai.config.truncateThreshold = 0;
+    chai.config.showDiff = true;
+    window.expect = chai.expect;
+</script>
+
+<script src="browser/CompteSwitcherSpec.js"></script>
+
+<script>
+    require(['ractive', 'decorators/mdlDecorator'], function (Ractive, mdlDecorator) {
+        //Ractive Defaults Settings
+        Ractive.decorators.mdl = mdlDecorator;
+
+        //
+        mocha.run();
+    });
+</script>
+</body>
+</html>
