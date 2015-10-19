@@ -5,7 +5,7 @@ Ractive.DEBUG = false;
 
 describe('Ractive', function() {
 
-    it('Doit être opérationelle dans Node', function () {
+    it('Doit être opérationnelle dans Node', function () {
 
         var ractive = new Ractive({
             template: 'Hello from {{who}}'

@@ -1,10 +1,11 @@
 var requirejs = require('../config/requireJSForTests').requirejs;
 var expect = require('chai').expect;
-var jsdom = require('jsdom')
+var jsdom = require('jsdom');
+var cheerio = require('cheerio');
 
 describe('Iban Component', function() {
 
-    it('Doit être utilisable', function (done) {
+    it('Doit être invocable sans erreur', function (done) {
 
         requirejs(['ractive', 'components/atoms/iban/Iban'], function(Ractive, Iban) {
             
@@ -60,7 +61,7 @@ describe('Iban Component', function() {
 
     });
 
-    it('Doit afficher correctement chaque partie du l\'iban', function (done) {
+    it('Doit afficher correctement chaque partie du l\'iban [jsdom]', function (done) {
 
         requirejs(['components/atoms/iban/Iban'], function(Iban) {
 
@@ -78,6 +79,37 @@ describe('Iban Component', function() {
             var guichet = document.querySelector('[role=guichet]').innerHTML;
             var compte = document.querySelector('[role=compte]').innerHTML;
             var cle = document.querySelector('[role=cle]').innerHTML;
+
+            expect(pays).to.equal('FR');
+            expect(controle).to.equal('76');
+            expect(banque).to.equal('18206');
+            expect(guichet).to.equal('00210');
+            expect(compte).to.equal('65772447001');
+            expect(cle).to.equal('12');
+
+            done();
+        });
+
+    });
+
+    it('Doit afficher correctement chaque partie du l\'iban [cheerio]', function (done) {
+
+        requirejs(['components/atoms/iban/Iban'], function(Iban) {
+
+            var component = new Iban({
+                data: {
+                    iban: 'FR7618206002106577244700112'
+                }
+            });
+
+            var $ = cheerio.load(component.toHTML());
+
+            var pays = $('table').find('[role=pays]').text();
+            var controle = $('table').find('[role=controle]').text();
+            var banque = $('table').find('[role=banque]').text();
+            var guichet = $('table').find('[role=guichet]').text();
+            var compte = $('table').find('[role=compte]').text();
+            var cle = $('table').find('[role=cle]').text();
 
             expect(pays).to.equal('FR');
             expect(controle).to.equal('76');
