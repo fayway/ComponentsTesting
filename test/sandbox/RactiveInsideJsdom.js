@@ -6,31 +6,21 @@ var iban = requirejs('components/atoms/iban/Iban');
 describe('Ractive Inside jsdom', function () {
 
     it ('Doit rendre du HTML fait par la Ractive générique dans un fake DOM à la jsdom', function (done) {
+
         jsdom.env({
             html: '<div id="container"></div>',
             scripts: [
-                __dirname + "/../../node_modules/ractive/ractive.min.js",
-                "http://code.jquery.com/jquery.js"
+                __dirname + "/../../node_modules/ractive/ractive.min.js"
             ],
             done: function (err, window) {
                 var Ractive = window.Ractive;
-                //console.log('Ractive', window.Ractive);
-
                 var document = window.document;
-                //window.holder = fixture = document.createElement('div');
-                //document.body.appendChild(window.holder);
                 var container = document.getElementById('container');
 
-                var ractive = new Ractive({
+                new Ractive({
                     el: container,
                     template: '<div><h1>Hello {{name}}</h1></div>',
                     data: {name: 'World'},
-                    oninit: function () {
-                        //console.log('oninit');
-                    },
-                    onrender: function () {
-                        //console.log('onrender');
-                    },
                     oncomplete: function () {
                         //console.log('oncomplete');
                         //console.log(container.innerHTML);
@@ -40,11 +30,39 @@ describe('Ractive Inside jsdom', function () {
                 });
             }
         });
-
     });
 
-    xit('Doit rendre du HTML par nos composants dans un fake DOM à la jsdom', function (done) {
+    it('Doit rendre du HTML par nos composants dans un fake DOM à la jsdom.', function (done) {
 
+        jsdom.env({
+            html: '<div id="container"></div>',
+            scripts: [
+                __dirname + "/../../node_modules/requirejs/require.js",
+                __dirname + "/deps/material.js",
+                __dirname + "/deps/main.js"
+            ],
+            done: function (err, window) {
+                var document = window.document;
+                var container = document.getElementById('container');
+
+                var requirejs = window.require;
+                requirejs(['ractive'], function (Ractive) {
+                    var ractive = new Ractive({
+                        el: container,
+                        template: '<div><h1>Hello {{name}}</h1></div>',
+                        data: {name: 'World'},
+                        oncomplete: function () {
+                            expect(container.innerHTML).to.equal('<div><h1>Hello World</h1></div>');
+                            done();
+                        }
+                    });
+                });
+
+            }
+        });
+    });
+
+    xit('Doit rendre du HTML par nos composants dans un fake DOM à la jsdom. Tenative qui marche pas', function (done) {
         jsdom.env({
             html: `
                 <script>
@@ -66,29 +84,13 @@ describe('Ractive Inside jsdom', function () {
                 __dirname + "/../../node_modules/requirejs/require.js"
             ],
             done: function (err, window) {
-                //var Ractive = window.Ractive;
-                //console.log('Ractive', window.Ractive);
-
-                var document = window.document;
-                var container = document.getElementById('container');
-
                 var requirejs = window.require;
-
                 //console.log(requirejs);
                 requirejs(['utils/ObjectUtils'], function (ObjectUtils) {
-                    window.onModulesLoaded();
                     console.log(ObjectUtils);
                     done();
                 });
-
-                window.onModulesLoaded = function () {
-                    console.log("ready to roll!");
-                    done();
-                };
-
             }
         });
-
     });
-
 });
