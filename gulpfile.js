@@ -4,7 +4,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
 var concat = require('gulp-concat');
 var rjs = require('requirejs');
-var clean = require('gulp-clean');
+var rimraf = require('gulp-rimraf');
 
 gulp.task('connect', function () {
     connect.server({
@@ -25,7 +25,7 @@ gulp.task('default', ['connect', 'watch']);
 
 gulp.task('clean', function () {
     return gulp.src('dist', {read: false})
-        .pipe(clean());
+        .pipe(rimraf());
 })
 
 //

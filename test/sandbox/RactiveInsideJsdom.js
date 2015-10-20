@@ -1,7 +1,5 @@
 var expect = require('chai').expect;
 var jsdom = require("jsdom");
-var requirejs = require('../config/requireJSForTests').requirejs;
-var iban = requirejs('components/atoms/iban/Iban');
 
 describe('Ractive Inside jsdom', function () {
 
@@ -22,8 +20,6 @@ describe('Ractive Inside jsdom', function () {
                     template: '<div><h1>Hello {{name}}</h1></div>',
                     data: {name: 'World'},
                     oncomplete: function () {
-                        //console.log('oncomplete');
-                        //console.log(container.innerHTML);
                         expect(container.innerHTML).to.equal('<div><h1>Hello World</h1></div>');
                         done();
                     }
@@ -32,37 +28,62 @@ describe('Ractive Inside jsdom', function () {
         });
     });
 
-    it('Doit rendre du HTML par nos composants dans un fake DOM à la jsdom.', function (done) {
+    it('Doit rendre du HTML par un de nos composants dans un fake DOM confectionné par du jsdom', function (done) {
 
         jsdom.env({
             html: '<div id="container"></div>',
             scripts: [
                 __dirname + "/../../node_modules/requirejs/require.js",
-                __dirname + "/deps/material.js",
-                __dirname + "/deps/main.js"
+                __dirname + "/../fakes/material.js",
+                __dirname + "/../../dist/main.js",
+                __dirname + "/../../node_modules/jquery/dist/jquery.min.js",
             ],
             done: function (err, window) {
                 var document = window.document;
                 var container = document.getElementById('container');
 
                 var requirejs = window.require;
-                requirejs(['ractive'], function (Ractive) {
-                    var ractive = new Ractive({
+                requirejs(['components/atoms/iban/Iban'], function (Iban) {
+
+                    new Iban({
                         el: container,
-                        template: '<div><h1>Hello {{name}}</h1></div>',
-                        data: {name: 'World'},
+                        data: {
+                            iban: 'FR7618206002106577244700112'
+                        },
                         oncomplete: function () {
-                            expect(container.innerHTML).to.equal('<div><h1>Hello World</h1></div>');
-                            done();
+                            try {
+                                var $ = window.$;
+                                var $html = $(container.innerHTML);
+
+                                var pays = $html.find('[role=pays]').text();
+                                var controle = $html.find('[role=controle]').text();
+                                var banque = $html.find('[role=banque]').text();
+                                var guichet = $html.find('[role=guichet]').text();
+                                var compte = $html.find('[role=compte]').text();
+                                var cle = $html.find('[role=cle]').text();
+
+                                expect(pays).to.equal('FR');
+                                expect(controle).to.equal('76');
+                                expect(banque).to.equal('18206');
+                                expect(guichet).to.equal('00210');
+                                expect(compte).to.equal('65772447001');
+                                expect(cle).to.equal('12');
+
+                                done();
+
+                            } catch (err) {
+                                done(err);
+                            }
                         }
                     });
-                });
 
+                });
             }
         });
     });
 
-    xit('Doit rendre du HTML par nos composants dans un fake DOM à la jsdom. Tenative qui marche pas', function (done) {
+    xit('jsdom doit savoir quand le module RequireJS à été chargé', function (done) {
+
         jsdom.env({
             html: `
                 <script>
@@ -83,13 +104,27 @@ describe('Ractive Inside jsdom', function () {
             scripts: [
                 __dirname + "/../../node_modules/requirejs/require.js"
             ],
-            done: function (err, window) {
-                var requirejs = window.require;
-                //console.log(requirejs);
-                requirejs(['utils/ObjectUtils'], function (ObjectUtils) {
-                    console.log(ObjectUtils);
+            created(err, window) {
+                window.onModulesLoaded = function () {
+                    console.log("ready to roll!");
                     done();
+                };
+            },
+            done: function (err, window) {
+                var document = window.document;
+                //var container = document.getElementById('container');
+                window.onModulesLoaded = function () {
+                    console.log("ready to roll!");
+                    done();
+                };
+
+                var requirejs = window.require;
+                //console.log('RequireJS', requirejs);
+
+                requirejs(['utils/TestJsDom'], function (TestJsDom) {
+                    TestJsDom.sayHello(done);
                 });
+
             }
         });
     });
