@@ -1,9 +1,9 @@
 var expect = require('chai').expect;
-var jsdom = require("jsdom");
+var jsdom = require('jsdom');
 
 describe('Ractive Inside jsdom', function () {
 
-    it ('Doit rendre du HTML fait par la Ractive générique dans un fake DOM à la jsdom', function (done) {
+    it('Doit rendre du HTML fait par la Ractive générique dans un fake DOM confectionné par jsdom', function (done) {
 
         jsdom.env({
             html: '<div id="container"></div>',
@@ -68,6 +68,60 @@ describe('Ractive Inside jsdom', function () {
                                 expect(guichet).to.equal('00210');
                                 expect(compte).to.equal('65772447001');
                                 expect(cle).to.equal('12');
+
+                                done();
+
+                            } catch (err) {
+                                done(err);
+                            }
+                        }
+                    });
+
+                });
+            }
+        });
+    });
+
+    it('Doit simuler un fake click event sur un de nos composants dans un fake DOM confectionné par du jsdom', function (done) {
+
+        jsdom.env({
+            html: '<div id="container"></div>',
+            scripts: [
+                __dirname + "/../../node_modules/requirejs/require.js",
+                __dirname + "/../fakes/material.js",
+                __dirname + "/../../dist/main.js",
+                __dirname + "/../../node_modules/jquery/dist/jquery.min.js",
+            ],
+            done: function (err, window) {
+                var document = window.document;
+                var container = document.getElementById('container');
+
+                var requirejs = window.require;
+                requirejs(['components/organisms/compte-switcher/CompteSwitcher', 'models/Compte'], function (CompteSwitcher, Compte) {
+
+                    var simpsons = [
+                        new Compte(1, 'M', 'Homer', 'Simpson', '/images/homer.png', 'homer', 'father', true),
+                        new Compte(2, 'Mme', 'Marge', 'Simpson', '/images/marge.png', 'marge', 'mother')
+                    ]
+
+                    new CompteSwitcher({
+                        el: container,
+                        data: {
+                            comptes: simpsons
+                        },
+                        oncomplete: function () {
+                            try {
+                                var $ = window.$;
+                                var $html = $(container.innerHTML);
+
+                                var $marge = $html.find('li[data-login=marge]');
+
+                                expect($marge.text()).to.equal('Marge Simpson');
+
+                                $marge.click();
+
+                                expect($html.find('[role=default-name]').text()).to.equal('Marge Simpson');
+                                expect($html.find('[role=default-photo]').attr('src')).to.contain('marge.png');
 
                                 done();
 
