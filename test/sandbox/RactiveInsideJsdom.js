@@ -35,7 +35,7 @@ describe('Ractive Inside jsdom', function () {
             scripts: [
                 __dirname + "/../../node_modules/requirejs/require.js",
                 __dirname + "/../fakes/material.js",
-                __dirname + "/../../dist/main.js",
+                __dirname + "/../../dist/mainForTests.js",
                 __dirname + "/../../node_modules/jquery/dist/jquery.min.js",
             ],
             done: function (err, window) {
@@ -89,11 +89,12 @@ describe('Ractive Inside jsdom', function () {
             scripts: [
                 __dirname + "/../../node_modules/requirejs/require.js",
                 __dirname + "/../fakes/material.js",
-                __dirname + "/../../dist/main.js",
-                __dirname + "/../../node_modules/jquery/dist/jquery.min.js",
+                __dirname + "/../../dist/mainForTests.js",
+                __dirname + "/../../node_modules/jquery/dist/jquery.min.js"
             ],
             done: function (err, window) {
                 var document = window.document;
+                var $ = window.$;
                 var container = document.getElementById('container');
 
                 var requirejs = window.require;
@@ -111,17 +112,19 @@ describe('Ractive Inside jsdom', function () {
                         },
                         oncomplete: function () {
                             try {
-                                var $ = window.$;
-                                var $html = $(container.innerHTML);
-
-                                var $marge = $html.find('li[data-login=marge]');
-
+                                var $marge =  $('li[data-login=marge]');
                                 expect($marge.text()).to.equal('Marge Simpson');
 
+                                //Before Click
+                                expect($('[role=active-account-name]').text()).to.equal('Homer Simpson');
+                                expect($('[role=active-account-photo]').attr('src')).to.contain('homer.png');
+
+                                //Click
                                 $marge.click();
 
-                                expect($html.find('[role=default-name]').text()).to.equal('Marge Simpson');
-                                expect($html.find('[role=default-photo]').attr('src')).to.contain('marge.png');
+                                //After Click
+                                expect($('[role=active-account-name]').text()).to.equal('Marge Simpson');
+                                expect($('[role=active-account-photo]').attr('src')).to.contain('marge.png');
 
                                 done();
 

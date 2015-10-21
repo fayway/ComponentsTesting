@@ -49,6 +49,8 @@ gulp.task('compile', ['clean'], function () {
         preserveLicenseComments: false,
         modules: [{
             name: 'main'
+        }, {
+            name: 'mainForTests'
         }]
     });
 });

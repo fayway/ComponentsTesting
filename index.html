@@ -8,9 +8,22 @@
     <link rel="stylesheet" href="node_modules/material-design-lite/material.css">
     <link rel="stylesheet" href="css/app.css">
     <script src="node_modules/material-design-lite/material.js"></script>
+    <script data-main="src/js/main.js" src="node_modules/requirejs/require.js"></script>
+    <script>
+        require.config({
+            baseUrl: 'src/js',
+            paths: {
+                'templates': '../templates',
+                'ractive': '../../node_modules/ractive/ractive',
+                'promise': '../../node_modules/native-promise-only/npo',
+                'text': '../../node_modules/requirejs-text/text',
+                '_': '../../node_modules/lodash/index',
+                'jquery': '../../node_modules/jquery/dist/jquery'
+            }
+        });
+    </script>
     <title>Components Testing</title>
 </head>
 <body>
-    <script data-main="src/js/main.js" src="node_modules/requirejs/require.js"></script>
 </body>
 </html>

@@ -22,12 +22,6 @@ define([
         ibanSplitter: function (iban) {
             var ibanRegex = /^([A-Z]{2})(\d{2})(\d{5})(\d{5})(\d{11})(\d{2})$/;
             return iban.match(ibanRegex);
-        },
-        oninit: function () {
-            console.log('Iban oninit');
-        },
-        oncomplete: function () {
-            console.log('Iban oncomplete');
         }
     });
 

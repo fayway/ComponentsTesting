@@ -1,7 +1,7 @@
 <div>
-    <img src="{{compteCourant.photo}}" class="app-avatar" role="default-photo">
+    <img src="{{compteCourant.photo}}" class="app-avatar" role="active-account-photo">
     <div class="app-avatar-dropdown">
-        <span role="default-name">{{#if compteCourant }}{{compteCourant.getFullName()}}{{/if}}</span>
+        <span role="active-account-name">{{#if compteCourant }}{{compteCourant.getFullName()}}{{/if}}</span>
         <div class="mdl-layout-spacer"></div>
         <button decorator="mdl" id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
             <i class="material-icons" role="presentation">arrow_drop_down</i>

@@ -36,8 +36,8 @@ describe('CompteSwitcher Component', function () {
             var $html = $(component.toHTML());
             //
             ////Test Default Account
-            var defaultName = $html.find('[role="default-name"]').text();
-            var defaultPhoto = $html.find('[role="default-photo"]').attr('src');
+            var defaultName = $html.find('[role="active-account-name"]').text();
+            var defaultPhoto = $html.find('[role="active-account-photo"]').attr('src');
 
             expect(defaultName).to.contain(homer.firstname);
             expect(defaultName).to.contain(homer.lastname);
@@ -80,12 +80,12 @@ describe('CompteSwitcher Component', function () {
             });
 
             $('[data-login=marge]').click();
-            expect($('[role=default-name]').text()).to.contain(marge.firstname);
-            expect($('[role=default-photo]').attr('src')).to.contain(marge.photo);
+            expect($('[role=active-account-name]').text()).to.contain(marge.firstname);
+            expect($('[role=active-account-photo]').attr('src')).to.contain(marge.photo);
 
             $('[data-login=bart]').click();
-            expect($('[role=default-name]').text()).to.contain(bart.firstname);
-            expect($('[role=default-photo]').attr('src')).to.contain(bart.photo);
+            expect($('[role=active-account-name]').text()).to.contain(bart.firstname);
+            expect($('[role=active-account-photo]').attr('src')).to.contain(bart.photo);
             done();
         });
     });

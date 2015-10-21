@@ -1,16 +1,9 @@
 var requirejs = require('../config/requireJSForTests').requirejs;
 var expect = require('chai').expect;
 var cheerio = require('cheerio');
-var Compte = requirejs('models/Compte');
+var Simpsons = require('../fakes/Simpsons');
 
 describe('CompteSwitcher Component', function () {
-
-    var homer = new Compte(1, 'M', 'Homer', 'Simpson', '/images/homer.png', 'hsmipson', 'father', true );
-    var marge = new Compte(2, 'Mme', 'Marge', 'Simpson', '/images/marge.png', 'msmipson', 'mother' );
-    var bart = new Compte(3, 'M', 'Bart', 'Simpson', '/images/bart.png', 'bsimpson', 'son' );
-    var lisa = new Compte(4, 'M', 'Lisa', 'Simpson', '/images/lisa.png', 'lsimpson', 'daughter' );
-
-    var simpsons = [homer , marge, bart, lisa];
 
     it('Doit être invocable sans erreur', function (done) {
 
@@ -34,7 +27,7 @@ describe('CompteSwitcher Component', function () {
             var component = new CompteSwitcher();
 
             var setComptes = function () {
-                component.set('comptes', [marge, bart, lisa]);
+                component.set('comptes', [Simpsons.Marge, Simpsons.Bart, Simpsons.Lisa]);
             }
             expect(setComptes).to.throw(Error);
 
@@ -49,28 +42,27 @@ describe('CompteSwitcher Component', function () {
 
             var component = new CompteSwitcher({
                 data: {
-                    comptes: simpsons
+                    comptes: Simpsons.Family
                 }
             });
 
             var $html = cheerio(component.toHTML());
             //
-            ////Test Default Account
-            var defaultName = $html.find('[role="default-name"]').text();
-            var defaultPhoto = $html.find('[role="default-photo"]').attr('src');
+            ////Test Active Account
+            var activeName = $html.find('[role="active-account-name"]').text();
+            var activePhoto = $html.find('[role="active-account-photo"]').attr('src');
 
-            expect(defaultName).to.contain(homer.firstname);
-            expect(defaultName).to.contain(homer.lastname);
-            expect(defaultPhoto).to.equal(homer.photo);
+            expect(activeName).to.equal(Simpsons.Homer.getFullName());
+            expect(activePhoto).to.equal(Simpsons.Homer.photo);
 
             ////Test other Accounts
             var $accounts = $html.find('li[role=account]');
-            expect($accounts.length).to.equal(simpsons.length);
+            expect($accounts.length).to.equal(Simpsons.Family.length);
 
-            expect($accounts.eq(0).text()).to.contain(homer.firstname);
-            expect($accounts.eq(1).text()).to.contain(marge.firstname);
-            expect($accounts.eq(2).text()).to.contain(bart.firstname);
-            expect($accounts.eq(3).text()).to.contain(lisa.firstname);
+            expect($accounts.eq(0).text()).to.contain(Simpsons.Homer.firstname);
+            expect($accounts.eq(1).text()).to.contain(Simpsons.Marge.firstname);
+            expect($accounts.eq(2).text()).to.contain(Simpsons.Bart.firstname);
+            expect($accounts.eq(3).text()).to.contain(Simpsons.Lisa.firstname);
 
             done();
 
