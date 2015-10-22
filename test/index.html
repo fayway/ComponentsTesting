@@ -26,6 +26,7 @@
 <script src="../node_modules/chai/chai.js"></script>
 <script src="../node_modules/requirejs/require.js"></script>
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="config/waitUntilExists.js"></script>
 
 <script>
     require.config({
@@ -36,11 +37,12 @@
             'promise': '../../node_modules/native-promise-only/npo',
             'text': '../../node_modules/requirejs-text/text',
             '_': '../../node_modules/lodash/index',
-            'jquery': '../../node_modules/jquery/dist/jquery'
+            'jquery': '../../node_modules/jquery/dist/jquery',
+            'sinon': '../../node_modules/sinon/lib/sinon'
         }
     });
     //
-    mocha.setup({ui: 'bdd'});
+    mocha.setup({ui: 'bdd', timeout: 3000});
     chai.config.includeStack = true;
     chai.config.truncateThreshold = 0;
     chai.config.showDiff = true;
@@ -51,6 +53,7 @@
 <script src="browser/SearchFilterSpec.js"></script>
 <script src="browser/VirementBoxSpec.js"></script>
 <script src="browser/SalarieCardSpec.js"></script>
+<script src="browser/HomeControllerSpec.js"></script>
 
 <script>
     require(['ractive', 'decorators/mdlDecorator'], function (Ractive, mdlDecorator) {

@@ -33,8 +33,12 @@ describe('SearchFilter Component', function () {
                 })
 
                 ractive.on('search-filter.keywordchange', function (keyword) {
-                    expect(keyword).to.equal('test');
-                    done();
+                    try {
+                        expect(keyword).to.equal('test');
+                        done();
+                    } catch (error) {
+                        done(error);
+                    }
                 });
 
                 var $searchTextField = $container.find('#search');

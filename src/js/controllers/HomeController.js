@@ -10,11 +10,12 @@ define([
     'text!templates/main-layout.html'
 ], function (CompteService, SalarieService, OperationService, VirementService, DemoApp, Ractive, LayoutTemplate) {
     return {
-        execute: function () {
-            console.log('HomeController.execute()');
+        execute: function (options) {
+            options = options || {};
+            console.log('HomeController.execute()', options);
 
             var ractive = new Ractive({
-                el: 'body',
+                el: options.container ? options.container : 'body',
                 template: LayoutTemplate,
                 isolated: false,
                 components: {
@@ -60,9 +61,11 @@ define([
                     if (callback) {
                         callback();
                     }
+                    this.fire('virementposted');
                 }.bind(this));
             });
 
+            return ractive;
         }
     }
 });

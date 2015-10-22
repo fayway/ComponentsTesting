@@ -37,9 +37,13 @@ describe('VirementBox Component', function () {
                 })
 
                 ractive.on('virement-box.virementOrder', function (salarieId, montantVirement) {
-                    expect(salarieId).to.equal(125);
-                    expect(montantVirement).to.equal(1500);
-                    done();
+                    try {
+                        expect(salarieId).to.equal(125);
+                        expect(montantVirement).to.equal(1500);
+                        done();
+                    } catch (error) {
+                        done(error);
+                    }
                 });
 
                 var $montantField = $container.find('.app-montant input');
