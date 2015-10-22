@@ -13,12 +13,12 @@ gulp.task('connect', function () {
 });
 
 gulp.task('livereload', function () {
-    gulp.src('src/**')
+    gulp.src(['src/**', 'test/**'])
         .pipe(connect.reload());
 });
 
 gulp.task('watch', function () {
-    gulp.watch(['src/**'], ['livereload']);
+    gulp.watch(['src/**', 'test/**'], ['livereload']);
 });
 
 gulp.task('default', ['connect', 'watch']);

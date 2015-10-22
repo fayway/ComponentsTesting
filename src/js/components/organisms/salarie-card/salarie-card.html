@@ -1,10 +1,10 @@
 <div class="app-card-virement mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
     <div class="mdl-card__title mdl-card--expand">
-        <h2 class="mdl-card__title-text">{{fullname}}</h2>
+        <h2 class="mdl-card__title-text app-salarie-name">{{fullname}}</h2>
     </div>
     <div class="mdl-card__media {{#if civilite === 'M'}}app-card-male{{else}}app-card-female{{/if}}">
         <img src="{{photo}}" class="app-virement-owner">
-        <div class="app-virement-balance">Balance: {{balance}} €</div>
+        <div class="app-virement-balance">Balance: <span class="balance">{{balance}}</span> €</div>
     </div>
     <div class="mdl-card__supporting-text">
         <div><strong>IBAN</strong></div>

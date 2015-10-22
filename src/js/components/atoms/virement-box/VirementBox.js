@@ -34,8 +34,12 @@ define([
         toggleVirementConfirmed: function (event) {
             this.set('isVirementConfirmed', event.node.checked);
         },
-        fireVirement: function () {
-            this.fire('virementOrder', this.get('salarieId'), parseFloat(this.get('montantVirement')), this.showProgress.bind(this), this.clear.bind(this));
+        fireVirement: function (event) {
+            var montantVirement = this.get('montantVirement');
+            if (!montantVirement) {
+                montantVirement = this.getNodeMontantVirementValue();
+            }
+            this.fire('virementOrder', this.get('salarieId'), parseFloat(montantVirement), this.showProgress.bind(this), this.clear.bind(this));
         },
         showProgress: function () {
             this.set('waitingVirement', true);
@@ -48,6 +52,9 @@ define([
                 checkbox.MaterialCheckbox.uncheck();
             }
             this.set('waitingVirement', false);
+        },
+        getNodeMontantVirementValue: function () {
+            return this.el.querySelector('.app-montant input').value;
         }
     });
 

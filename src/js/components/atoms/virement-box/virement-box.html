@@ -1,9 +1,9 @@
-<div decorator="mdl" class="mdl-textfield mdl-js-textfield">
-    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" value="{{montantVirement}}"  />
+<div decorator="mdl" class="mdl-textfield mdl-js-textfield app-montant">
+    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" value="{{montantVirement}}" />
     <label class="mdl-textfield__label" >Montant...</label>
     <span class="mdl-textfield__error">Veuillez saisir un montant</span>
 </div>
-<button decorator="mdl" on-click="fireVirement(event)" {{#if !isVirementConfirmed }}disabled{{/if}} class="app-virement-validate mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+<button decorator="mdl" on-click="fireVirement(event)" {{#if !isVirementConfirmed }}disabled{{/if}} class="app-virement-validate mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored app-valider-virement">
 Valider
 </button>
 {{#if waitingVirement}}
