@@ -1,6 +1,6 @@
 //Bootstrap init config
-require('./config/requireJSForTests');
-require('./config/ractiveForTests');
+//require('./config/requireJSForTests');
+//require('./config/ractiveForTests');
 
 //Run Tests
 require('./sandbox/RactiveInsideJsdom');

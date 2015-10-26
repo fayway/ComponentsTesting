@@ -1,7 +1,13 @@
+//Bootstrap init config
+require('../config/requireJSForTests');
+require('../config/ractiveForTests');
+//
 var requirejs = require('../config/requireJSForTests').requirejs;
 var expect = require('chai').expect;
 var cheerio = require('cheerio');
 var Simpsons = require('../fakes/Simpsons');
+var jsdom = require('jsdom');
+var RactiveNode = require('ractive');
 
 describe('CompteSwitcher Component', function () {
 
