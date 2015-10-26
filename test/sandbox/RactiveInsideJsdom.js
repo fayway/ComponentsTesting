@@ -143,19 +143,7 @@ describe('Ractive Inside jsdom', function () {
 
         jsdom.env({
             html: `
-                <script>
-                    require.config({
-                        baseUrl: '../../src/js',
-                        paths: {
-                            'templates': '../../templates',
-                            'ractive': '../../../node_modules/ractive/ractive',
-                            'promise': '../../../node_modules/native-promise-only/npo',
-                            'text': '../../../node_modules/requirejs-text/text',
-                            '_': '../../../node_modules/lodash/index',
-                            'jquery': '../../../node_modules/jquery/dist/jquery'
-                        }
-                    });
-                </script>
+
                 <div id="container"></div>
             `,
             scripts: [
@@ -176,10 +164,27 @@ describe('Ractive Inside jsdom', function () {
                 };
 
                 var requirejs = window.require;
-                //console.log('RequireJS', requirejs);
+                //
+                requirejs.config({
+                    baseUrl:  __dirname + '/../../src/js',
+                    paths: {
+                        'templates': '../../templates',
+                        'ractive': '../../../node_modules/ractive/ractive',
+                        'promise': '../../../node_modules/native-promise-only/npo',
+                        'text': '../../../node_modules/requirejs-text/text',
+                        '_': '../../../node_modules/lodash/index',
+                        'jquery': '../../../node_modules/jquery/dist/jquery'
+                    }
+                });
 
-                requirejs(['utils/TestJsDom'], function (TestJsDom) {
+
+                console.log('RequireJS', requirejs.config.baseUrl);
+
+                console.log('TestJsDom', requirejs.toUrl('utils/TestJsDom.js'));
+
+                requirejs(['utils/TestJsDom.j'], function (TestJsDom) {
                     TestJsDom.sayHello(done);
+                    done();
                 });
 
             }

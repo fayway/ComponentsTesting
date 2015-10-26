@@ -1,3 +1,7 @@
+//Bootstrap init config
+require('../config/requireJSForTests');
+require('../config/ractiveForTests');
+//
 var requirejs = require('../config/requireJSForTests').requirejs;
 var expect = require('chai').expect;
 var jsdom = require('jsdom');
@@ -52,9 +56,34 @@ describe('Iban Component', function() {
                 }
             });
 
-            var expectedHtml = '<table class="app-virement-iban mdl-data-table mdl-js-data-table mdl-shadow--2dp"><thead><tr><th class="mdl-data-table__cell--non-numeric">Pays</th> <th>Contrôle</th> <th>Banque</th> <th>Guichet</th> <th>Compte</th> <th>Clé RIB</th></tr></thead> <tbody><tr><td class="mdl-data-table__cell--non-numeric" role="pays">FR</td> <td role="controle">76</td> <td role="banque">18206</td> <td role="guichet">00210</td> <td role="compte">65772447001</td> <td role="cle">12</td></tr></tbody></table>';
+            var expectedHtml = `<table class="app-virement-iban mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                                    <thead>
+                                    <tr>
+                                        <th class="mdl-data-table__cell--non-numeric">Pays</th>
+                                        <th>Contrôle</th>
+                                        <th>Banque</th>
+                                        <th>Guichet</th>
+                                        <th>Compte</th>
+                                        <th>Clé RIB</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="mdl-data-table__cell--non-numeric" role="pays">FR</td>
+                                        <td role="controle">76</td>
+                                        <td role="banque">18206</td>
+                                        <td role="guichet">00210</td>
+                                        <td role="compte">65772447001</td>
+                                        <td role="cle">12</td>
+                                    </tr>
+                                    </tbody>
+                                </table>`;
 
-            expect(component.toHTML()).to.equal(expectedHtml);
+            String.prototype.stripSpaces = function () {
+                return this.replace(/(\r\n|\n|\r|\s+)/g, '');
+            };
+
+            expect(component.toHTML().stripSpaces()).to.equal(expectedHtml.stripSpaces());
 
             done();
         });
