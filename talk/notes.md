@@ -6,28 +6,28 @@
 
 ### System Under de Test (SUT) 
 
-* "Whatever thing we are testing" defined from the perspective of the test (Class, Object, Method)
+- "Whatever thing we are testing" defined from the perspective of the test (Class, Object, Method)
 
 ### Front Door / Back Door
 
-* Front Door : The public API of our SUT
-* Back Door : An alternative interface to the SUT that test software can use to inject inputs into the SUT (eg: DB)
+- Front Door : The public API of our SUT
+- Back Door : An alternative interface to the SUT that test software can use to inject inputs into the SUT (eg: DB)
 
 ### Direct Inputs/Direct Outputs
 
-* Direct Inputs : When the test interacts with the SUT directly via it's Front Door (or public API)
-* Direct Outputs : Responses received by the test from the SUT via its Front Door (Values, Objects, Exceptions)
+- Direct Inputs : When the test interacts with the SUT directly via it's Front Door (or public API)
+- Direct Outputs : Responses received by the test from the SUT via its Front Door (Values, Objects, Exceptions)
 
 Calc.add(1, 2) => 3 : Direct Inputs / Direct Outputs
 
 ### Depended-on component (DOC)
 
-* A component on which the SUT depends through delegation of responsibilities
+- A component on which the SUT depends through delegation of responsibilities
 
 ### Indirect Inputs/Indirect Outputs
 
-* Indirect Inputs : They are values returned by another component the SUT behavior depends on (We often use a Test Stub to inject the indirect inputs into the SUT)
-* Indirect Outputs : Actions that cannot be observed through the public API of the SUT but which are seen or experienced by other systems or application components
+- Indirect Inputs : They are values returned by another component the SUT behavior depends on (We often use a Test Stub to inject the indirect inputs into the SUT)
+- Indirect Outputs : Actions that cannot be observed through the public API of the SUT but which are seen or experienced by other systems or application components
 
 OperationService.create(Operation, Correspondant) => DB record, JMS Message, Email notification, Log file entry
 
@@ -38,10 +38,6 @@ OperationService.create(Operation, Correspondant) => DB record, JMS Message, Ema
 ### Test fixture
 
 A test fixture is all the things we need to have in place in order to run a test and expect a particular outcome:  Preconditions of the test
-
-### State / Behavior Verification
-
-@TODO 
 
 ### Test Doubles (Imposters)
 
@@ -59,7 +55,7 @@ Whe we replace a component on which the SUT depends with a "test-specific equiva
 - Fake : Replace a real component by a much simpler one that implements same functionality 
 - Dummy : Used to replace a required SUT DOC that doesn't affect the specific test case
 
-Question to ask : Is our Test Double helping to inject Indirect Input, or is it helping to observe Indirect Output? Or is it simply there to replace a required dependency for which we don’t want to use a real implementation?
+Question to ask : Is our Test Double helping to inject Indirect Input, or is it helping to observe Indirect Output? Or is it simply there to replace a required dependency for which we don't want to use a real implementation?
 
 ### Four-Phase Test
 
@@ -70,11 +66,23 @@ Structure each test with four distinct parts executed in sequence :
 - Result verification (Assertions)
 - Fixture teardown (Restore the world back into the state in which you found it)
 
+### State / Behavior Verification
 
+- State Verification : Make the Self-Checking Test to inspect the state of the SUT after it has been exercised and compare it to the expected state
+- Behavior Verification : Used when there is no state to verify, capture the indirect outputs of the SUT as they occur and compare them to the expected behavior
 
+Behavior Verification almost always involves interacting with or replacing a depended-on component (DOC) that the SUT interacts with at run time.
 
+We can use Behavior Verification any time the SUT calls methods on other objects or components; we must use Behavior Verification whenever the expected outputs of the SUT are transient and cannot be determined simply by looking at the post-exercise state of the SUT or the DOC.
 
+## F.I.R.S.T Principles
 
+- Fast : Run tests quickly (since we will be running them all the time)  
+- Isolated/Independent : Do not relay on a global state, No order-of-run dependency, Must not fail because a dependency failed
+- Repeatable : Run N times, get same result even if we change the environment (to help isolate bugs and enable automation)
+- Self-checking : Test can automatically detect if it pass or fail (No human checking of output)
+- Timely : Tests must be written at the right time, just before the production code (To avoid ending up with a code hard to test)
+ 
 # General
 
 ## Excuses
@@ -89,7 +97,33 @@ Structure each test with four distinct parts executed in sequence :
 - Work in constructor
 - Global state
 
-
 # Test Startegy
 
 http://xunitpatterns.com/TestStrategy.html
+
+
+#Components
+
+Why Components
+http://vuejs.org/guide/overview.html#Component_System
+
+
+Express templates via modules that returns Pure Components
+
+Not worrying about context really simplifies testing and also makes the composition task a charm.
+
+## What we test : What does component do
+
+The Component is not responsible for adding the selected item to the shopping cart. Its task is to show a visualisation of the abstract data and provide the user with a way to interact with the system.
+
+## Atomic Web Design
+
+http://bradfrost.com/blog/post/atomic-web-design/
+
+- Atoms: 
+ - Have no dependencies on the rest of the app
+ - Rarely have their own state
+
+Parent Child communication
+http://vuejs.org/guide/components.html#Parent-Child_Communication
+
