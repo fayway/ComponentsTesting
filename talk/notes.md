@@ -190,26 +190,30 @@ It's a bad idea to mutate parent state from a child component, because:
 - It makes the parent and child tightly coupled;
 - It makes the parent state much harder to reason about when looking at it alone, because its state may be modified by any child! Ideally, only a component itself should be allowed to modify its own state
 
-## Communication through Events/Observers
+## Communication through Publisher/Subscriber
 
-The event system must be independent from the native DOM : No need of Doubling the DOM during Tests
+The event system must be independent from the native DOM : No need of DOM to test
 
 Each Component is an event emitter that can:
+
+- Listen to event
 - Listen to data change
-- Listen to event 
-- Dispatch events
+- Emit events
 
+# Testing
 
-http://vuejs.org/guide/overview.html#Component_System
+## What we test
 
+What does a component do
 
-Express templates via modules that returns Pure Components
+The Component is not directly responsible for querying/updating
 
+A Componet idially :
 
+- Show a visualisation of the abstract data
+- Provide the user with a way to interact with the system
+- Communicate with other Components
 
-## What we test : What does component do
-
-The Component is not responsible for querying. Its task is to show a visualisation of the abstract data and provide the user with a way to interact with the system.
 
 ## Atomic Web Design
 
