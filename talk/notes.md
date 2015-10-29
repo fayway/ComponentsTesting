@@ -102,19 +102,114 @@ We can use Behavior Verification any time the SUT calls methods on other objects
 http://xunitpatterns.com/TestStrategy.html
 
 
-#Components
+# Components
 
-Why Components
+## What's wrong with MVC
+
+- Controllers load data from Model and are paired with specific Views (templates which more and more complex)
+- Mostly one active controller at a time (One controller by route)
+- How to make controllers communicate?
+- How to organize views?
+- How to tests?
+
+## Component-based design
+
+- Defining a set of components, for every UI element, screen, and route
+- Component focus on a View's state and behavior
+- An application will always have a root component that contains all other components (tree)
+- A component has input and output properties, it's the public API of the component (Needs to be well-defined)
+- A component has a template, which describes how the component is rendered on the page
+- Components have a well-defined lifecycle, which we can tap into to execute custom logic (eg: initialised, rendered, destroyed...)
+- A component can interact with its host DOM element (listen to events, update its properties, invoke methods on it)
+
+
+<app />  : 
+```
+<div id="app">
+  <app-nav />
+  <app-view>
+    <app-sidebar />
+    <app-content />
+  </app-view>
+</div>
+```
+
+## Benifits
+
+- Break down complex Controller/Template into small simple Components
+- Components are Self-contained, can be bootstrapped as an application, loaded as a route, or used in some other components directly
+- Components are reusable 
+- Easy to scale large applications
+- Not worrying about context really simplifies testing
+
+## Atomic Design
+
+Chemistry metaphor to describe Components, provide semantic rules and principles of organization for interface elements
+
+PatternLab (Static Site Generator) http://patternlab.io/about.html
+
+- Atoms:
+ * The basic building blocks
+ * Can't be broken down further without losing their meaning
+ * Have no dependencies on the rest of the app
+ 
+- Molecules: 
+ * Groups of elements that function together as a unit
+ * Building up from atoms to molecules encourages a “do one thing and do it well” mentality
+ 
+- Organisms : 
+ * Groups of molecules (and possibly atoms) joined together to form distinct section of an interface.
+ * Building up from molecules to organisms encourages creating standalone, portable, reusable components.
+
+- Templates : 
+ * Mostly focus on content structure rather than the actual content.
+ * Comprised mostly of organisms combined together to form page-level objects.
+ 
+- Pages : Specific instances of templates, concrete final form with data
+
+Tweaked Atomic Design for SPA
+
+- Atoms
+- Molecules
+- Organisms
+- Ecosystem : 
+ * Container composed of multiple organism components
+ * Organize, manage, and delegate messages to organism components (Nested ecosystem should never directly communicate)
+- Environment :
+ * We compose multiple ecosystems into a single environment, the application.
+ 
+## Parent-Child Communication
+
+- Components must have a well-defined public API
+- Components must provide an interface boundary definition that specifies what inputs and outputs the component works with
+- Nested Components communicate through the high-level parent 
+- Avoid directly relying on parent data in a child component (parent and child tightly coupled
+
+It's a bad idea to mutate parent state from a child component, because:
+
+- It makes the parent and child tightly coupled;
+- It makes the parent state much harder to reason about when looking at it alone, because its state may be modified by any child! Ideally, only a component itself should be allowed to modify its own state
+
+## Communication through Events/Observers
+
+The event system must be independent from the native DOM : No need of Doubling the DOM during Tests
+
+Each Component is an event emitter that can:
+- Listen to data change
+- Listen to event 
+- Dispatch events
+
+
 http://vuejs.org/guide/overview.html#Component_System
 
 
 Express templates via modules that returns Pure Components
 
-Not worrying about context really simplifies testing and also makes the composition task a charm.
+
 
 ## What we test : What does component do
 
-The Component is not responsible for adding the selected item to the shopping cart. Its task is to show a visualisation of the abstract data and provide the user with a way to interact with the system.
+The Component is not responsible for querying. Its task is to show a visualisation of the abstract data and provide the user with a way to interact with the system.
 
 ## Atomic Web Design
 
