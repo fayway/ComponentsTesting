@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Components Testing</title>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/solarized.css" id="theme">
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+        <style>
+            .first {
+                color: #a23;
+                font-size: larger;
+                font-weight: bold
+            }
+            .stats {
+                /*display: flex;*/
+                flex-flow: row wrap;
+                justify-content: space-between;
+                align-items: stretch;
+            }
+        </style>
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+
+                <section>
+                    <h1>Components Testing</h1>
+                    <h3>Control & Observe UI State & Behavior</h3>
+                    <p>
+                        <small>Fayçal Tirich</small>
+                    </p>
+                </section>
+
+
+                <!-- XUNIT PATTERNS -->
+                <section>
+
+                    <section data-markdown>
+                        # Design for Testability
+                    </section>
+
+                    <section>
+                        <h2>xUnit Test Patterns</h2>
+                        
+                        <img src="img/xunit_patterns_book.jpg">
+                    </section>
+
+                    <section>
+                        <h2>System Under de Test (SUT)</h2>
+                        <p>
+                            "Whatever thing we are testing" defined from the perspective of the test (Class, Object, Method...)
+                        </p>
+                        <img src="img/01-SUT.png" />
+                    </section>
+
+                    <section data-markdown>
+                        ## Front Door / Back Door
+
+                        - **Front Door** : The public API of our SUT
+
+                        - **Back Door** : An alternative interface to the SUT that test software can use to inject inputs into the SUT (eg: DB)
+                    </section>
+
+                    <section data-markdown>
+                        ## Direct Inputs/Direct Outputs
+
+                        - **Direct Inputs** : When the test interacts with the SUT directly via it's Front Door (or public API)
+
+                        - **Direct Outputs** : Responses received by the test from the SUT via its Front Door (Values, Objects, Exceptions...)
+
+                        <pre>
+                            <code class="hljs">
+                                Calc.add(1, 2)  //Direct Inputs
+                                > 3             //Direct Outputs
+                            </code>
+                        </pre>
+
+                    </section>
+
+                    <section data-markdown>
+                        ## Depended-on component (DOC)
+
+                        - A component on which the SUT depends through delegation of responsibilities
+                    </section>
+
+                    <section data-markdown>
+                        ## Indirect Inputs/Indirect Outputs
+
+                        - **Indirect Inputs** : They are values returned by another component the SUT behavior depends on (We often use a Test Stub to inject the indirect inputs into the SUT)
+
+                        - **Indirect Outputs** : Actions that cannot be observed through the public API of the SUT but which are seen or experienced by other systems or application components
+                        <pre>
+                            <code class="hljs">
+                                OperationService.create(Operation, Correspondant)
+                                //DB record, JMS Message, Email notification, Log file entry
+                            </code>
+                        </pre>
+
+                    </section>
+
+                    <section>
+                        <h2>Inputs/Outputs Big Picture</h2>
+
+                        <img src="img/02-InputsOutputs.png" />
+                    </section>
+
+                    <section data-markdown>
+                        # When Testing, it's all about Controlling input and observing output
+                    </section>
+
+                    <section data-markdown>
+                        ## Test fixture
+
+                        A test fixture is all the things we need to have in place in order to run a test and expect a particular outcome
+
+                        Preconditions of the test
+                    </section>
+
+                    <section data-markdown>
+                        ## Test Doubles (Imposters)
+
+                        Whe we replace a component on which the SUT depends with a "test-specific equivalent" because:
+
+                        - DOC isn't available
+                        - DOC is slow
+                        - DOC trigger unwanted processing (irrelevant for a specific test)
+                    </section>
+
+                    <section data-markdown>
+                        ## Variations of Test Doubles
+
+                        - **Stub** : Replace a real component to **control indirect inputs** of the SUT, force the SUT to follow a specific path
+
+                        - **Spy** : More capable version of a Test Stub. We use it as an **observation** point for the **indirect outputs** of the SUT. Like Stubs, it may need to provide values to the SUT in response to method calls but the Test Spy also captures the indirect outputs of the SUT as it is exercised and saves them for later verification by the test
+                    </section>
+
+                    <section data-markdown>
+                        ## Variations of Test Doubles
+
+                        - **Mock** : Used as an observation point that is used to verify the indirect outputs of the SUT as it is exercised. In plus of Stub functionality (returning values to SUT) the emphasis is **verification of the indirect outputs** (Stub + Assertion: the mock verifies it is being used correctly by the SUT.)
+
+                        - **Fake** : Replace a real component by a much **simpler** one that implements same functionality
+
+                        - **Dummy** : Used to replace a required SUT DOC that **doesn't affect** the specific test case
+                    </section>
+
+
+
+                    <section data-markdown>
+                        ## Test Doubles (Imposters)
+
+                        Question to ask : Is our **Test Double** helping to **inject Indirect Input**, or is it helping to **observe Indirect Output**? Or is it simply there to **replace a required dependency** for which we don't want to use a real implementation?
+                    </section>
+
+                    <section data-markdown>
+                        ## Four-Phase Test
+
+                        Structure each test with four distinct parts executed in sequence :
+
+                        - Fixture setup (Preconditions, Test doubles)
+                        - Exercise SUT (Interact, stimulate)
+                        - Result verification (Assertions)
+                        - Fixture teardown (Restore the world back into the state in which we found it)
+                    </section>
+
+                    <section data-markdown>
+                        ## State / Behavior Verification
+
+                        - **State Verification** : Make the Self-Checking Test to inspect the state of the SUT after it has been exercised and compare it to the expected state
+
+                        - **Behavior Verification** : Used when there is no state to verify, capture the indirect outputs of the SUT as they occur and compare them to the expected behavior
+                    </section>
+
+                    <section data-markdown>
+                        ## State / Behavior Verification
+
+                        **Behavior Verification** almost always involves **interacting with or replacing a depended-on component (DOC)** that the SUT interacts with at run time.
+
+                        We can use Behavior Verification any time the SUT calls methods on other objects or components; we must use Behavior Verification whenever the expected outputs of the SUT are transient and cannot be determined simply by looking at the post-exercise state of the SUT or the DOC.
+                    </section>
+
+                    <section>
+                        <h2><span class="first">F.I.R.S.T</span> Principles</h2>
+
+                        <ul>
+                            <li>
+                                <span class="first">F</span>ast : Run tests quickly (since we will be running them all the time)
+                            </li>
+                            <li>
+                                <span class="first">I</span>solated/<span class="first">I</span>ndependent : Do not relay on a global state, No order-of-run dependency, Must not fail because a dependency failed
+                            </li>
+                            <li>
+                                <span class="first">R</span>epeatable : Run N times, get same result even if we change the environment (to help isolate bugs and enable automation)
+                            </li>
+                            <li>
+                                <span class="first">S</span>elf-checking : Test can automatically detect if it pass or fail (No human checking of output)
+                            </li>
+                            <li>
+                                <span class="first">T</span>imely : Tests must be written at the right time, just before the production code (To avoid ending up with a code hard to test)
+                            </li>
+                        </ul>
+                    </section>
+
+                </section>
+                <!-- END XUNIT PATTERNS -->
+
+                <!-- COMPONENTS -->
+                <section>
+
+                    <section data-markdown>
+                        # Components
+                    </section>
+
+                    <section data-markdown>
+                        ## What's wrong with MVC
+
+                        - Controllers load data from Model and are paired with specific Views (More and more complex templates)
+                        - Mostly one active controller at a time (One controller by route)
+                        - How to make controllers communicate?
+                        - How to organize views?
+                        - How to tests?
+                    </section>
+
+                    <section data-markdown>
+                        ## Component-based design
+
+                        - Defining a set of components, for every UI element, screen, and route
+                        - Component focus on a View's state and behavior
+                        - An application will always have a root component that contains all other components (tree)
+                        - A component has input and output properties, it's the public API of the component (Needs to be well-defined)
+                    </section>
+
+                    <section data-markdown>
+                        ## Component-based design
+
+                        - A component has a template, which describes how the component is rendered on the page
+                        - Components have a well-defined lifecycle, which we can tap into to execute custom logic (eg: initialised, rendered, destroyed...)
+                        - A component can interact with its host DOM element (listen to events, update its properties, invoke methods on it)
+                    </section>
+
+                    <section>
+                        Classic Template
+                        <img src="img/Template.png" />
+                    </section>
+
+                    <section>
+                        Refactoring to Components
+                        <img src="img/Components.png" />
+                    </section>
+
+                    <section data-markdown>
+                        ## Component-based design
+                        <pre>
+                            <code class="hljs" data-trim contenteditable>
+                                &lt;div id=&quot;app&quot;&gt;
+                                    &lt;app-nav /&gt;
+                                    &lt;app-view&gt;
+                                        &lt;app-sidebar /&gt;
+                                        &lt;app-content /&gt;
+                                    &lt;/app-view&gt;
+                                &lt;/div&gt;
+                            </code>
+                        </pre>
+                    </section>
+
+                    <section>
+                        <h2>Components Tree</h2>
+                        <img src="img/components_tree.png" />
+                    </section>
+
+                    <section data-markdown>
+                        ## Benifits
+
+                        - Break down complex Controller/Template into small simple Components
+                        - Components are Self-contained, can be bootstrapped as an application, loaded as a route, or used in some other components directly
+                        - Components are reusable
+                        - Easy to scale large applications
+                        - Not worrying about context really simplifies testing
+                    </section>
+
+                    <section>
+                        <h2>Atomic Design</h2>
+                        <p>
+                            Chemistry metaphor to describe Components, provide semantic rules and principles of organization for interface elements
+                        </p>
+                        <p>
+                            By <a href="http://patternlab.io/about.html" target="_blank">PatternLab</a> (A Static Site Generator)
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2>Atomic Design</h2>
+
+                        <img src="img/atom_design.png" />
+                    </section>
+
+                    <section data-markdown>
+                        ## Atomic Design
+
+                        ### Atoms
+
+                        - The basic building blocks
+                        - Can't be broken down further without losing their meaning
+                        - Have no dependencies on the rest of the app
+                    </section>
+
+                    <section data-markdown>
+                        ## Atomic Design
+
+                        ### Molecules
+                        - Groups of elements that function together as a unit
+                        - Building up from atoms to molecules encourages a “do one thing and do it well” mentality
+                    </section>
+
+                    <section data-markdown>
+                        ## Atomic Design
+
+                        ### Organisms
+                        - Groups of molecules (and possibly atoms) joined together to form distinct section of an interface.
+                        - Building up from molecules to organisms encourages creating standalone, portable, reusable components.
+                    </section>
+
+                    <section data-markdown>
+                        ## Atomic Design
+
+                        ### Templates
+                        - Mostly focus on content structure rather than the actual content.
+                        - Comprised mostly of organisms combined together to form page-level objects.
+                    </section>
+
+                    <section data-markdown>
+                        ## Atomic Design
+
+                        ### Pages
+                        - Specific instances of templates, concrete final form with data
+                    </section>
+
+                    <section data-markdown>
+                        ## Tweaked Atomic Design for SPA
+
+                        - Atoms
+                        - Molecules
+                        - Organisms
+                        - Ecosystem
+                            * Container composed of multiple organism components
+                            * Organize, manage, and delegate messages to organism components (Nested ecosystem should never directly communicate)
+                        - Environment
+                            * We compose multiple ecosystems into a single environment, the application.
+                    </section>
+
+                    <section>
+                        <h2>Atomic Design Tweak for SPA</h2>
+
+                        <img src="img/atomic_design_tweak.png" />
+
+                        <a href="https://medium.com/@yejodido/atomic-components-managing-dynamic-react-components-using-atomic-design-part-1-5f07451f261f#.ejj1fxb4y" target="_blank">More info</a>
+                    </section>
+
+                    <section data-markdown>
+                        ## Parent-Child Communication
+
+                        - Components must have a well-defined public API
+                        - Components must provide an interface boundary definition that specifies what inputs and outputs the component works with
+                        - Nested Components communicate through the high-level parent
+                        - Avoid directly relying on parent data in a child component (parent and child tightly coupled
+                    </section>
+
+
+                    <section data-markdown>
+                        ## Parent-Child Communication
+
+                        It's a bad idea to mutate parent state from a child component, because:
+
+                        - It makes the parent and child tightly coupled
+                        - It makes the parent state much harder to reason about when looking at it alone, because its state may be modified by any child! Ideally, only a component itself should be allowed to modify its own state
+                    </section>
+
+                    <section data-markdown>
+                        ## Communication through Publisher/Subscriber
+
+                        The event system must be independent from the native DOM (So no need of DOM to test)
+
+                        Each Component is an event emitter/receiver that can:
+
+                        - Listen to event
+                        - Listen to data change
+                        - Emit events
+                    </section>
+
+                    <section>
+                        <h2>Parent-Child Communication</h2>
+
+                        <img src="img/03-Tree-Communication.png">
+                    </section>
+
+                </section>
+                <!-- END COMPONENTS -->
+
+                <!-- TESTING -->
+                <section>
+
+                    <section data-markdown>
+                        # Testing
+                    </section>
+
+                    <section data-markdown>
+                        # Components Role
+
+                        The Component is not directly responsible for querying/updating
+
+                        A Component ideally :
+
+                        - Show a visualisation of the abstract data
+                        - Provide the user with a way to interact with the system
+                        - Communicate with other Components
+                    </section>
+
+                    <section>
+                        <h2>Testing Tools Ecosystem</h2>
+
+                        <div class="stats">
+                            <img src="img/mocha_stats_.png">
+                            <img src="img/chai_stats_.png">
+                            <img src="img/sinon_stats_.png">
+                            <img src="img/jsdom_stats_.png">
+                            <img src="img/cheerio_stats_.png">
+                        </div>
+                    </section>
+
+                    <section data-markdown>
+                        ## Faking DOM
+                        <pre>
+                            <code class="javascript" style="font-size: small">
+                                var window, document, fixture, Ractive;
+
+                                before(function (done) {
+                                    jsdom.env({
+                                        html: '',
+                                        scripts: [
+                                            __dirname + "/../../node_modules/ractive/ractive.min.js"
+                                        ],
+                                        done: function (err, w) {
+                                            window = w;
+                                            document = w.document;
+                                            Ractive = w.Ractive;
+                                            fixture = document.createElement('div');
+                                            document.body.appendChild(fixture);
+                                            done();
+                                        }
+                                    });
+                                });
+                                after(function () {
+                                    window.close();
+                                });
+                                afterEach(function () {
+                                    fixture.innerHTML = '';
+                                });
+                            </code>
+                        </pre>
+                    </section>
+
+                    <section data-markdown>
+                        ## Testing State - Example Part 1
+                        <pre>
+                            <code class="javascript">
+                                var SUT = Ractive.extend({
+                                template: `
+                                    &lt;div&gt;
+                                        &lt;h1&gt;Bonjour {{user.nom}}&lt;/h1&gt;
+                                        {{#if !user.email }}
+                                        &lt;div class="alert"&gt;Vous devez renseigner votre email&lt;/div&gt;
+                                        {{/if}}
+                                    &lt;/div&gt;
+                                `
+                                });
+                            </code>
+                        </pre>
+                    </section>
+
+                    <section data-markdown>
+                        ## Testing State - Example Part 2
+                        <pre>
+                            <code class="javascript">
+                                it("Doit proposer de renseigner l'email
+                                        si il est manquant", function (done) {
+
+                                    component.set('user', {
+                                        nom: 'Homer'
+                                    });
+
+                                    var expectedHTML = `
+                                    &lt;div&gt;
+                                        &lt;h1&gt;Bonjour Homer&lt;/h1&gt;
+                                        &lt;div class="alert"&gt;Vous devez renseigner votre email&lt;/div&gt;
+                                    &lt;/div&gt;
+                                    `;
+
+                                    expect(component.toHTML()).to.equal(expectedHTML);
+                                    done();
+                                });
+                            </code>
+                        </pre>
+                    </section>
+
+                    <section data-markdown>
+                        ## Testing State - Example Part 3
+                        <pre>
+                            <code class="javascript">
+                                it("Ne doit pas proposer de renseigner l'email
+                                        si il n'est pas manquant", function (done) {
+
+                                    component.set('user', {
+                                        nom: 'Marge',
+                                        email: 'marge@simpson.com'
+                                    });
+
+                                    var expectedHTML = `
+                                        &lt;div&gt;
+                                            &lt;h1&gt;Bonjour Marge&lt;/h1&gt;
+                                        &lt;/div&gt;
+                                    `;
+
+                                    expect(component.toHTML()).to.equal(expectedHTML);
+                                    done();
+                                });
+                            </code>
+                        </pre>
+                    </section>
+
+                    <section data-markdown>
+                        ## Testing Behavior - Example 1 - 1/2
+                        <pre>
+                            <code class="javascript">
+                            var SUT = Ractive.extend({
+                                oninit: function () {
+                                    this.observe('toy' , function (toy) {
+                                        if (!toy) {
+                                            return;
+                                        }
+                                        if (toy.isRadioactive) {
+                                            this.fire('danger', 'Toy Radioactive');
+                                        } else {
+                                            //Play with toy
+                                        }
+                                    })
+                                }
+                            });
+                            </code>
+                        </pre>
+                    </section>
+
+                    <section data-markdown>
+                        ## Testing Behavior - Example 1 - 2/2
+                        <pre>
+                            <code class="javascript">
+                                it('Doit déclancher un événement', function (done) {
+
+                                    var ractive = new Ractive({
+                                        template: '&lt;alarm toy="{{toy}}" /&gt;',
+                                        components: {
+                                            alarm: SUT
+                                        }
+                                    });
+
+                                    ractive.on('alarm.danger', function (message) {
+                                        expect(message).to.equal('Toy Radioactive');
+                                        done();
+                                    })
+
+                                    ractive.set('toy', {
+                                        isRadioactive: true
+                                    })
+                                });
+                            </code>
+                        </pre>
+                    </section>
+
+                    <section data-markdown>
+                        ## Testing Behavior - Example 2 - 1/2
+                        <pre>
+                            <code class="javascript">
+
+                                var SUT = Ractive.extend({
+                                    el: fixture,
+                                    template: `
+                                    &lt;div&gt;
+                                        &lt;h1&gt;Bonjour {{user.nom}}&lt;/h1&gt;
+                                        &lt;button id="tele" on-click="regarderTele()"&gt;Regarder Télé&lt;/button&gt;
+                                    &lt;/div&gt;
+                                    `,
+                                    regarderTele: function () {
+                                        this.fire('tele');
+                                    }
+                                });
+
+                            </code>
+                        </pre>
+                    </section>
+
+                    <section data-markdown>
+                        ## Testing Behavior - Example 2 - 2/2
+                        <pre>
+                            <code class="javascript">
+                                it('Doit réagir au click en déclanchant le bon événement', function (done) {
+
+                                    var component = new SUT();
+                                    component.on('tele', function () {
+                                        done();
+                                    });
+
+                                    var teleBtn = document.getElementById('tele');
+                                    teleBtn.click();
+                                });
+                            </code>
+                        </pre>
+                    </section>
+
+                    <section data-markdown>
+                        ## Testing Behavior - Example 3 - 1/2
+                        <pre>
+                            <code class="javascript">
+                                var TeleService = {
+                                    allumerTele: function () {
+                                    //
+                                    }
+                                };
+
+                                var SUT = Ractive.extend({
+                                    el: fixture,
+                                    template: `
+                                        &lt;div&gt;
+                                        &lt;h1&gt;Bonjour {{user.nom}}&lt;/h1&gt;
+                                        &lt;button id="telecommande" on-click="regarderTele()"&gt;Regarder Télé&lt;/button&gt;
+                                        &lt;/div&gt;
+                                        `,
+                                    regarderTele: function () {
+                                        TeleService.allumerTele();
+                                    }
+                                });
+                            </code>
+                        </pre>
+                    </section>
+
+                    <section data-markdown>
+                        ## Testing Behavior - Example 3 - 2/2
+                        <pre>
+                            <code class="javascript">
+                                it('Doit appeler la bonne fonction du bon service', function (done) {
+
+                                    sinon.spy(TeleService, 'allumerTele');
+
+                                    var component = new SUT();
+
+                                    var telecommande = document.getElementById('telecommande');
+
+                                    telecommande.addEventListener("click", function () {
+                                        expect(TeleService.allumerTele.calledOnce).to.be.true;
+                                        done();
+                                    });
+
+                                    telecommande.click();
+                                });
+                            </code>
+                        </pre>
+                    </section>
+
+                    <section>
+                        <h2>Continuous Integration - XUnit reporter</h2>
+
+                        <img src="img/mocha_xunit.png">
+                    </section>
+
+                </section>
+                <!-- END TESTING -->
+
+                <!-- Demo -->
+                <section>
+                    <h2>Demo</h2>
+                    <img src="img/demo.png">
+                </section>
+                <!-- End Demo -->
+
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() {
+                        hljs.initHighlightingOnLoad();
+                    } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

@@ -5,16 +5,20 @@
   "main": "index.html",
   "scripts": {
     "serve": "gulp",
+    "compile": "gulp compile",
     "test": "mocha test/index.js"
   },
   "dependencies": {
+    "chai": "^3.4.0",
     "jquery": "^2.1.4",
+    "jsdom": "^7.0.2",
     "lodash": "^3.10.1",
     "material-design-lite": "^1.0.5",
     "native-promise-only": "^0.8.1",
     "ractive": "^0.7.3",
     "requirejs": "^2.1.20",
-    "requirejs-text": "^2.0.12"
+    "requirejs-text": "^2.0.12",
+    "sinon": "^1.17.2"
   },
   "devDependencies": {
     "chai": "^3.3.0",
@@ -27,8 +31,6 @@
     "gulp-sourcemaps": "^1.6.0",
     "jsdom": "^7.0.0",
     "mocha": "^2.3.3",
-    "mocha-jsdom": "^1.0.0",
-    "simulant": "^0.1.5",
     "sinon": "^1.17.1"
   }
 }
