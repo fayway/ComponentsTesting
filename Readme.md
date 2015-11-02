@@ -1,6 +1,6 @@
 # Slides
 
-Launch `talk/index.html`
+Launch local `talk/index.html` or online [http://fayway.github.io/ComponentsTesting/](http://fayway.github.io/ComponentsTesting/)
 
 # Demo
 
