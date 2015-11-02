@@ -45,7 +45,7 @@
 
                 <section>
                     <h1>Components Testing</h1>
-                    <h3>Control & Observe UI State & Behavior</h3>
+                    <h3>Keep an eye on UI State & Behavior</h3>
                     <p>
                         <small>Fayçal Tirich</small>
                     </p>
@@ -329,7 +329,7 @@
 
                         ### Molecules
                         - Groups of elements that function together as a unit
-                        - Building up from atoms to molecules encourages a “do one thing and do it well” mentality
+                        - Building up from atoms to molecules encourages a â€œdo one thing and do it wellâ€� mentality
                     </section>
 
                     <section data-markdown>
@@ -573,7 +573,7 @@
                         ## Testing Behavior - Example 1 - 2/2
                         <pre>
                             <code class="javascript">
-                                it('Doit déclancher un événement', function (done) {
+                                it('Doit dÃ©clancher un Ã©vÃ©nement', function (done) {
 
                                     var ractive = new Ractive({
                                         template: '&lt;alarm toy="{{toy}}" /&gt;',
@@ -605,7 +605,7 @@
                                     template: `
                                     &lt;div&gt;
                                         &lt;h1&gt;Bonjour {{user.nom}}&lt;/h1&gt;
-                                        &lt;button id="tele" on-click="regarderTele()"&gt;Regarder Télé&lt;/button&gt;
+                                        &lt;button id="tele" on-click="regarderTele()"&gt;Regarder TÃ©lÃ©&lt;/button&gt;
                                     &lt;/div&gt;
                                     `,
                                     regarderTele: function () {
@@ -621,7 +621,7 @@
                         ## Testing Behavior - Example 2 - 2/2
                         <pre>
                             <code class="javascript">
-                                it('Doit réagir au click en déclanchant le bon événement', function (done) {
+                                it('Doit rÃ©agir au click en dÃ©clanchant le bon Ã©vÃ©nement', function (done) {
 
                                     var component = new SUT();
                                     component.on('tele', function () {
@@ -650,7 +650,7 @@
                                     template: `
                                         &lt;div&gt;
                                         &lt;h1&gt;Bonjour {{user.nom}}&lt;/h1&gt;
-                                        &lt;button id="telecommande" on-click="regarderTele()"&gt;Regarder Télé&lt;/button&gt;
+                                        &lt;button id="telecommande" on-click="regarderTele()"&gt;Regarder TÃ©lÃ©&lt;/button&gt;
                                         &lt;/div&gt;
                                         `,
                                     regarderTele: function () {
@@ -682,6 +682,12 @@
                                 });
                             </code>
                         </pre>
+                    </section>
+
+                    <section>
+                        <h2>Debugging</h2>
+
+                        <img src="img/debug_tests.png">
                     </section>
 
                     <section>
