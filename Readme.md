@@ -6,7 +6,13 @@ Launch `talk/index.html`
 
 ## Prerequisites
 
-Node 4
+- Install Node 4
+
+- Install dependencies
+
+```
+npm install
+```
 
 ## Internal server (with LiveReload)
 
