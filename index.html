@@ -49,6 +49,9 @@
                     <p>
                         <small>Fayçal Tirich</small>
                     </p>
+                    <p>
+                        <small>2015</small>
+                    </p>
                 </section>
 
 
@@ -329,7 +332,7 @@
 
                         ### Molecules
                         - Groups of elements that function together as a unit
-                        - Building up from atoms to molecules encourages a â€œdo one thing and do it wellâ€� mentality
+                        - Building up from atoms to molecules encourages a "do one thing and do it well" mentality
                     </section>
 
                     <section data-markdown>
@@ -448,38 +451,6 @@
                     </section>
 
                     <section data-markdown>
-                        ## Faking DOM
-                        <pre>
-                            <code class="javascript" style="font-size: small">
-                                var window, document, fixture, Ractive;
-
-                                before(function (done) {
-                                    jsdom.env({
-                                        html: '',
-                                        scripts: [
-                                            __dirname + "/../../node_modules/ractive/ractive.min.js"
-                                        ],
-                                        done: function (err, w) {
-                                            window = w;
-                                            document = w.document;
-                                            Ractive = w.Ractive;
-                                            fixture = document.createElement('div');
-                                            document.body.appendChild(fixture);
-                                            done();
-                                        }
-                                    });
-                                });
-                                after(function () {
-                                    window.close();
-                                });
-                                afterEach(function () {
-                                    fixture.innerHTML = '';
-                                });
-                            </code>
-                        </pre>
-                    </section>
-
-                    <section data-markdown>
                         ## Testing State - Example Part 1
                         <pre>
                             <code class="javascript">
@@ -573,7 +544,7 @@
                         ## Testing Behavior - Example 1 - 2/2
                         <pre>
                             <code class="javascript">
-                                it('Doit dÃ©clancher un Ã©vÃ©nement', function (done) {
+                                it('Doit déclancher un événement', function (done) {
 
                                     var ractive = new Ractive({
                                         template: '&lt;alarm toy="{{toy}}" /&gt;',
@@ -605,7 +576,7 @@
                                     template: `
                                     &lt;div&gt;
                                         &lt;h1&gt;Bonjour {{user.nom}}&lt;/h1&gt;
-                                        &lt;button id="tele" on-click="regarderTele()"&gt;Regarder TÃ©lÃ©&lt;/button&gt;
+                                        &lt;button id="telecommande" on-click="regarderTele()"&gt;Regarder Télé&lt;/button&gt;
                                     &lt;/div&gt;
                                     `,
                                     regarderTele: function () {
@@ -618,18 +589,51 @@
                     </section>
 
                     <section data-markdown>
+                        ## Faking DOM
+                        <pre>
+                            <code class="javascript" style="font-size: small">
+                                var window, document, fixture, Ractive;
+
+                                before(function (done) {
+                                    jsdom.env({
+                                        html: '',
+                                        scripts: [
+                                            __dirname + "/../../node_modules/ractive/ractive.min.js"
+                                        ],
+                                        done: function (err, w) {
+                                            window = w;
+                                            document = w.document;
+                                            Ractive = w.Ractive;
+                                            fixture = document.createElement('div');
+                                            document.body.appendChild(fixture);
+                                            done();
+                                        }
+                                    });
+                                });
+                                after(function () {
+                                    window.close();
+                                });
+                                afterEach(function () {
+                                    fixture.innerHTML = '';
+                                });
+                            </code>
+                        </pre>
+                    </section>
+
+
+                    <section data-markdown>
                         ## Testing Behavior - Example 2 - 2/2
                         <pre>
                             <code class="javascript">
-                                it('Doit rÃ©agir au click en dÃ©clanchant le bon Ã©vÃ©nement', function (done) {
+                                it('Doit réagir au click en déclanchant le bon événement', function (done) {
 
                                     var component = new SUT();
                                     component.on('tele', function () {
                                         done();
                                     });
 
-                                    var teleBtn = document.getElementById('tele');
-                                    teleBtn.click();
+                                    var telecommandeBtn = document.getElementById('telecommande');
+                                    telecommandeBtn.click();
                                 });
                             </code>
                         </pre>
@@ -641,7 +645,7 @@
                             <code class="javascript">
                                 var TeleService = {
                                     allumerTele: function () {
-                                    //
+                                        //...
                                     }
                                 };
 
@@ -650,7 +654,7 @@
                                     template: `
                                         &lt;div&gt;
                                         &lt;h1&gt;Bonjour {{user.nom}}&lt;/h1&gt;
-                                        &lt;button id="telecommande" on-click="regarderTele()"&gt;Regarder TÃ©lÃ©&lt;/button&gt;
+                                        &lt;button id="telecommande" on-click="regarderTele()"&gt;Regarder Télé&lt;/button&gt;
                                         &lt;/div&gt;
                                         `,
                                     regarderTele: function () {
@@ -703,6 +707,7 @@
                 <section>
                     <h2>Demo</h2>
                     <img src="img/demo.png">
+                    <a href="https://github.com/fayway/ComponentsTesting" target="_blank">Demo Source Code</a>
                 </section>
                 <!-- End Demo -->
 
@@ -740,6 +745,22 @@
 			});
 
 		</script>
+
+        <!-- Asynchronous Google Analytics snippet -->
+        <script>
+            var _gaq = _gaq || [];
+            var pluginUrl =
+                    '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+            _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+            _gaq.push(['_setAccount', 'UA-66584307-1']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
 
 	</body>
 </html>
