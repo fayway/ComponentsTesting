@@ -20,6 +20,20 @@ cd project-folder
 npm install
 ```
 
+## Code Before and After Refactoring
+
+### MVC/Template Based Design
+
+```
+git checkout -b templates templates
+```
+
+### Components Based Design
+
+```
+git checkout master
+```
+
 ## Internal server (with LiveReload)
 
 ```
