@@ -8,7 +8,13 @@ Launch local `talk/index.html` or online [http://fayway.github.io/ComponentsTest
 
 - Install Node 4
 
+- Clone this repo
+
 - Install dependencies
+
+```
+cd project-folder
+```
 
 ```
 npm install
