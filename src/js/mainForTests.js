@@ -1,6 +1,10 @@
 'use strict';
 
-requirejs(['ractive', 'decorators/mdlDecorator', 'app'], function(Ractive, mdlDecorator) {
+requirejs([
+    'ractive',
+    'decorators/mdlDecorator',
+    'components/environment/demo-app/DemoApp'
+], function(Ractive, mdlDecorator) {
     //Ractive Defaults Settings
     Ractive.decorators.mdl = mdlDecorator;
 });

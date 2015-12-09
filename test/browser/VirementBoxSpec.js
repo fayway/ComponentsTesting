@@ -4,7 +4,7 @@ describe('VirementBox Component', function () {
 
     it('Doit être invocable sans erreur', function (done) {
 
-        require(['ractive', 'components/atoms/virement-box/VirementBox'], function (Ractive, VirementBox) {
+        require(['ractive', 'components/organisms/virement-box/VirementBox'], function (Ractive, VirementBox) {
 
             var component = new VirementBox();
 
@@ -19,7 +19,7 @@ describe('VirementBox Component', function () {
 
     it('Doit déclancher un evenement Ractive', function (done) {
 
-        require(['ractive', 'components/atoms/virement-box/VirementBox'], function (Ractive, VirementBox) {
+        require(['ractive', 'components/organisms/virement-box/VirementBox'], function (Ractive, VirementBox) {
 
             $(document).ready(function () {
 

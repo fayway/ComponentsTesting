@@ -1,14 +1,16 @@
 'use strict';
 
-describe('HomeController', function () {
+describe('MainSection', function () {
 
     it('Doit être invocable sans erreur', function (done) {
 
-        require(['controllers/HomeController'], function (HomeController) {
+        require(['ractive', 'components/ecosystems/main-section/MainSection'], function (Ractive, MainSection) {
 
-            expect(HomeController).to.not.null;
-            expect(HomeController.execute).to.exist;
+            var component = new MainSection();
 
+            expect(component).to.not.null;
+            expect(component instanceof Ractive).to.be.true;
+            expect(component.toHTML()).to.exist;
             done();
         });
 
@@ -17,26 +19,13 @@ describe('HomeController', function () {
     it('Doit permettre de réaliser un virement', function (done) {
 
         require([
+            'ractive',
             'sinon',
             'promise',
-            'services/CompteService',
-            'services/OperationService',
-            'services/SalarieService',
             'services/VirementService',
             'models/Salarie',
-            'models/Compte',
-            'controllers/HomeController'
-        ], function (Sinon, Promise, CompteService, OperationService, SalarieService, VirementService, Salarie, Compte, HomeController) {
-
-            Sinon.stub(CompteService, 'getComptes').returns(new Promise(function (fulfill) {
-                fulfill([new Compte(99, 'M', 'Homer', 'Simpson', null, null, null, true)]);
-            }));
-            Sinon.stub(OperationService, 'getPendingOperations').returns(new Promise(function (fulfill) {
-                fulfill([]);
-            }));
-            Sinon.stub(SalarieService, 'getSalaries').returns(new Promise(function (fulfill) {
-                fulfill([new Salarie(1, 'M', 'John', 'Doe', '/images/male.png', 1000, 'FR7618206002106577244700112')]);
-            }));
+            'components/ecosystems/main-section/MainSection'
+        ], function (Ractive, Sinon, Promise, VirementService, Salarie, MainSection) {
 
             //Sinon.spy(VirementService, 'postVirement');
             Sinon.stub(VirementService, 'postVirement').returns(new Promise(function (fulfill) {
@@ -44,10 +33,23 @@ describe('HomeController', function () {
             }));
 
             var $container = $('#container');
-            var ractive = HomeController.execute({container: $container});
 
+            var ractive = new Ractive({
+                el: $container,
+                template: '<main-section salaries="{{salaries}}" />',
+                components: {
+                    'main-section': MainSection
+                },
+                data: {
+                    salaries: [
+                        new Salarie(1, 'M', 'John', 'Doe', '/images/male.png', 1000, 'FR7618206002106577244700112')
+                    ]
+                }
+            });
+
+            //
             var cardSelector = '.app-virement-boxes .app-card-virement:first';
-
+            //
             var tester = function () {
                 var $cardBox = $(this);
                 var balance = $cardBox.find('.balance');
@@ -64,8 +66,8 @@ describe('HomeController', function () {
 
                 $validerButton.click();
             };
-
-            ractive.on('virementposted', function () {
+            //
+            ractive.on('main-section.virementposted', function () {
                 try {
                     expect(VirementService.postVirement.withArgs(1, 200).calledOnce).to.be.true;
                     var balance = $(cardSelector).find('.balance');

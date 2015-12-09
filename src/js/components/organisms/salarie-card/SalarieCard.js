@@ -2,7 +2,7 @@
 
 define([
     'components/atoms/iban/Iban',
-    'components/atoms/virement-box/VirementBox',
+    '../virement-box/VirementBox',
     'ractive',
     'text!./salarie-card.html'
 ], function (Iban, VirementBox, Ractive, Template) {

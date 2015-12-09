@@ -182,7 +182,7 @@ describe('Ractive Inside jsdom', function () {
 
                 console.log('TestJsDom', requirejs.toUrl('utils/TestJsDom.js'));
 
-                requirejs(['utils/TestJsDom.j'], function (TestJsDom) {
+                requirejs(['utils/TestJsDom.js'], function (TestJsDom) {
                     TestJsDom.sayHello(done);
                     done();
                 });
