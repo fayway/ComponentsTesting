@@ -4,41 +4,31 @@ Launch local `talk/index.html` or online [http://fayway.github.io/ComponentsTest
 
 # Demo
 
+![](https://raw.githubusercontent.com/fayway/ComponentsTesting/master/talk/img/demo.png)
+
 ## Prerequisites
 
 - Install Node 4
-
 - Clone this repo
-
 - Install dependencies
 
-```
-cd project-folder
-```
 
-```
-npm install
-```
+    $ cd project-folder
+    $ npm install
 
 ## Code Before and After Refactoring
 
 ### MVC/Template Based Design
 
-```
-git checkout -b templates templates
-```
+    $ git checkout -b templates templates
 
 ### Components Based Design
 
-```
-git checkout master
-```
+    $ git checkout master
 
 ## Internal server (with LiveReload)
 
-```
-npm run serve
-```
+    $ npm run serve
 
 Navigate to `http://localhost:8080/`
 
@@ -47,21 +37,11 @@ Navigate to `http://localhost:8080/`
 
 Some tests need compiled RequireJS modules
 
-```
-npm run compile
-```
+    $ npm run compile
 
 Running CLI test
 
-```
-npm test
-```
-
-It executes tests listed in file
-
-```
-test/index.js
-```
+    $ npm test
 
 ## Browser tests
 
