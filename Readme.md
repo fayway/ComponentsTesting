@@ -1,6 +1,6 @@
 # Slides
 
-Launch local `talk/index.html` or online [http://fayway.github.io/ComponentsTesting/](http://fayway.github.io/ComponentsTesting/)
+Launch local `talk/index.html` or use the online [http://fayway.github.io/ComponentsTesting/](http://fayway.github.io/ComponentsTesting/)
 
 # Demo
 
@@ -8,13 +8,17 @@ Launch local `talk/index.html` or online [http://fayway.github.io/ComponentsTest
 
 ## Prerequisites
 
-- Install Node 4
-- Clone this repo
-- Install dependencies
+* Install Node >= 4
+* Clone this repo
+* Install dependencies
 
+```
+$ cd projectfolder
+```
 
-    $ cd project-folder
-    $ npm install
+```
+$ npm install
+```
 
 ## Code Before and After Refactoring
 
@@ -46,6 +50,5 @@ Running CLI test
 ## Browser tests
 
 Navigate to `http://localhost:8080/test`
-
 
 
